@@ -1,3 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using simplebot;
 
-Console.WriteLine("Hello, World!");
+var bot = new Bot();
+bot.RunAsync().GetAwaiter().GetResult();
