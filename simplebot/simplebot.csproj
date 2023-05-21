@@ -7,4 +7,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="DSharpPlus" Version="5.0.0-nightly-01574" />
+      <PackageReference Include="DSharpPlus.CommandsNext" Version="5.0.0-nightly-01574" />
+      <PackageReference Include="DSharpPlus.Interactivity" Version="5.0.0-nightly-01574" />
+      <PackageReference Include="DSharpPlus.SlashCommands" Version="5.0.0-nightly-01574" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
 </Project>
