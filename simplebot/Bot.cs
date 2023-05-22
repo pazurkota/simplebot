@@ -5,6 +5,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using simplebot.Commands;
 
 namespace simplebot; 
 
@@ -39,8 +40,14 @@ public class Bot {
         var commandsConfig = new CommandsNextConfiguration() {
             StringPrefixes = new [] {configJson.Prefix},
             EnableMentionPrefix = true,
-            EnableDms = true
+            EnableDms = true,
+            EnableDefaultHelp = false
         };
+
+        Commands = Client.UseCommandsNext(commandsConfig);
+        
+        // commands registration
+        Commands.RegisterCommands<UtilityCommands>();
         
         await Client.ConnectAsync();
         await Task.Delay(-1); // make the bot stay online
