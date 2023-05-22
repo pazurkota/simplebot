@@ -26,6 +26,7 @@ public class Bot {
         var configJson = JsonConvert.DeserializeObject<Config>(json);
 
         var config = new DiscordConfiguration {
+            Intents = DiscordIntents.All,
             Token = configJson.Token,
             TokenType = TokenType.Bot,
             AutoReconnect = true,
