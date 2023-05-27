@@ -78,7 +78,7 @@ public class ModerationCommand : BaseCommandModule {
 
     [Command("unban"), System.ComponentModel.Description("Unbans a specified user.")]
     public async Task UnbanAsync(CommandContext ctx, DiscordUser user, [RemainingText] string reason = "No reason provided.") {
-        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.BanMembers)) {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild)) {
             await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
             return;
         }
@@ -95,7 +95,7 @@ public class ModerationCommand : BaseCommandModule {
     
     [Command("mute"), System.ComponentModel.Description("Mutes a specified user.")]
     public async Task MuteAsync(CommandContext ctx, DiscordMember member, [RemainingText] string reason = "No reason provided.") {
-        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageRoles)) {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageMessages)) {
             await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
             return;
         }
@@ -113,7 +113,7 @@ public class ModerationCommand : BaseCommandModule {
     
     [Command("tempmute"), System.ComponentModel.Description("Temporarily mutes a specified user.")]
     public async Task TempmuteAsync(CommandContext ctx, DiscordMember member, int time, [RemainingText] string reason = "No reason provided.") {
-        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageRoles)) {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageMessages)) {
             await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
             return;
         }
@@ -133,7 +133,7 @@ public class ModerationCommand : BaseCommandModule {
     
     [Command("unmute"), System.ComponentModel.Description("Unmutes a specified user.")]
     public async Task UnmuteAsync(CommandContext ctx, DiscordMember member, [RemainingText] string reason = "No reason provided.") {
-        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageRoles)) {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild)) {
             await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
             return;
         }
