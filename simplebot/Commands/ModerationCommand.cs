@@ -23,5 +23,22 @@ public class ModerationCommand : BaseCommandModule {
         var messages = await ctx.Channel.GetMessagesAsync(amount);
         await ctx.Channel.DeleteMessagesAsync(messages);
         await ctx.Channel.SendMessageAsync(embed);
-    } 
+    }
+    
+    [Command("kick"), System.ComponentModel.Description("Kicks a specified user.")]
+    public async Task KickAsync(CommandContext ctx, DiscordMember member, [RemainingText] string reason = "No reason provided.") {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.KickMembers)) {
+            await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
+            return;
+        }
+
+        var embed = new DiscordEmbedBuilder()
+            .WithTitle(":white_check_mark: Success!")
+            .WithDescription($"Succesfully kicked {member.Mention}!\nReason: {reason}!")
+            .WithColor(DiscordColor.Green)
+            .WithTimestamp(DateTime.Now);
+        
+        await member.RemoveAsync(reason);
+        await ctx.Channel.SendMessageAsync(embed);
+    }
 }
