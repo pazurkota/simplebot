@@ -92,4 +92,60 @@ public class ModerationCommand : BaseCommandModule {
         await ctx.Guild.UnbanMemberAsync(user, reason);
         await ctx.Channel.SendMessageAsync(embed);
     }
+    
+    [Command("mute"), System.ComponentModel.Description("Mutes a specified user.")]
+    public async Task MuteAsync(CommandContext ctx, DiscordMember member, [RemainingText] string reason = "No reason provided.") {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageRoles)) {
+            await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
+            return;
+        }
+
+        var embed = new DiscordEmbedBuilder()
+            .WithTitle(":white_check_mark: Success!")
+            .WithDescription($"Succesfully muted {member.Mention}!\nReason: {reason}!")
+            .WithColor(DiscordColor.Green)
+            .WithTimestamp(DateTime.Now);
+        
+        var role = ctx.Guild.GetRole(882733436686059028);
+        await member.GrantRoleAsync(role, reason);
+        await ctx.Channel.SendMessageAsync(embed);
+    }
+    
+    [Command("tempmute"), System.ComponentModel.Description("Temporarily mutes a specified user.")]
+    public async Task TempmuteAsync(CommandContext ctx, DiscordMember member, int time, [RemainingText] string reason = "No reason provided.") {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageRoles)) {
+            await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
+            return;
+        }
+
+        var embed = new DiscordEmbedBuilder()
+            .WithTitle(":white_check_mark: Success!")
+            .WithDescription($"Succesfully temporarily muted {member.Mention}!\nReason: {reason}!")
+            .WithColor(DiscordColor.Green)
+            .WithTimestamp(DateTime.Now);
+        
+        var role = ctx.Guild.GetRole(882733436686059028);
+        await member.GrantRoleAsync(role, reason);
+        await ctx.Channel.SendMessageAsync(embed);
+        await Task.Delay(time);
+        await member.RevokeRoleAsync(role, reason);
+    }
+    
+    [Command("unmute"), System.ComponentModel.Description("Unmutes a specified user.")]
+    public async Task UnmuteAsync(CommandContext ctx, DiscordMember member, [RemainingText] string reason = "No reason provided.") {
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageRoles)) {
+            await ctx.Channel.SendMessageAsync("You don't have permission to use this command!");
+            return;
+        }
+
+        var embed = new DiscordEmbedBuilder()
+            .WithTitle(":white_check_mark: Success!")
+            .WithDescription($"Succesfully unmuted {member.Mention}!\nReason: {reason}!")
+            .WithColor(DiscordColor.Green)
+            .WithTimestamp(DateTime.Now);
+        
+        var role = ctx.Guild.GetRole(882733436686059028);
+        await member.RevokeRoleAsync(role, reason);
+        await ctx.Channel.SendMessageAsync(embed);
+    }
 }
