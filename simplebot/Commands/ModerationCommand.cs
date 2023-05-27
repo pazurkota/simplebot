@@ -1,5 +1,7 @@
-﻿namespace simplebot.Commands; 
+﻿using DSharpPlus.CommandsNext;
 
-public class ModerationCommand {
+namespace simplebot.Commands; 
+
+public class ModerationCommand : BaseCommandModule {
     
 }
