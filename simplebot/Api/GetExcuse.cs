@@ -1,4 +1,5 @@
-﻿using simplebot.Classes;
+﻿using RestSharp;
+using simplebot.Classes;
 
 namespace simplebot.Api; 
 
@@ -7,7 +8,7 @@ public class GetExcuse : IApiRequest {
         throw new NotImplementedException();
     }
 
-    public ExcuseClass ParseData<ExcuseClass>(string data) {
+    public TExcuseClass ParseData<TExcuseClass>(string data) {
         throw new NotImplementedException();
     }
 }
