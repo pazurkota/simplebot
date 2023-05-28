@@ -1,5 +1,6 @@
 ﻿namespace simplebot.Api; 
 
 public abstract class ApiRequest {
-    private protected abstract string GetRequest();
+    protected abstract string GetRequest();
+    public abstract List<T> ParseData<T>();
 }

@@ -1,16 +1,18 @@
-﻿using RestSharp;
-using Newtonsoft.Json;
-using simplebot.Classes;
+﻿using Newtonsoft.Json;
+using RestSharp;
 
 namespace simplebot.Api; 
 
-public class GetExcuse : ApiRequest {
-    private const string BaseUrl = "https://excuser-three.vercel.app/v1/";
-
+public class GetRandomJoke : ApiRequest {
+    private const string BaseUrl = "https://api.api-ninjas.com/v1/";
+    
     protected override string GetRequest() {
         try {
+            var apiKey = ConfigHandler.GetConfig().ApiNinjasApiKey;
+            
             var client = new RestClient(BaseUrl);
-            var request = new RestRequest("excuse");
+            var request = new RestRequest("jokes?limit=1").AddHeader("X-Api-Key", apiKey);
+            
             var response = client.Get(request).Content;
             
             if (response == null) {
@@ -25,16 +27,16 @@ public class GetExcuse : ApiRequest {
         }
     }
 
-    public override List<ExcuseClass> ParseData<ExcuseClass>() {
+    public override List<T> ParseData<T>() {
         try {
             var data = GetRequest();
-            var excuse = JsonConvert.DeserializeObject<List<ExcuseClass>>(data);
+            var joke = JsonConvert.DeserializeObject<List<T>>(data);
 
-            if (excuse == null) {
-                throw new Exception("Excuse is null");
+            if (joke == null) {
+                throw new Exception("Joke is null");
             }
             
-            return excuse;
+            return joke;
         }
         catch (Exception e) {
             Console.WriteLine(e);
