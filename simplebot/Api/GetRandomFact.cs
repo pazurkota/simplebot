@@ -25,10 +25,10 @@ public class GetRandomFact : IApiRequest {
         }
     }
 
-    public FactClass ParseData() {
+    public List<FactClass> ParseData() {
         try {
             var data = GetRequest();
-            var fact = JsonConvert.DeserializeObject<FactClass>(data);
+            var fact = JsonConvert.DeserializeObject<List<FactClass>>(data);
 
             if (fact == null) {
                 throw new Exception("Fact is null");

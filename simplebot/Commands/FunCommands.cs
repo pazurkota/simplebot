@@ -41,4 +41,18 @@ public class FunCommands : BaseCommandModule {
 
         await ctx.Channel.SendMessageAsync(embed);
     }
+
+    [Command("randomfact")]
+    public async Task RandomFactAsync(CommandContext ctx) {
+        var fact = new GetRandomFact().ParseData();
+
+        var embed = new DiscordEmbedBuilder() {
+            Title = ":question: Did you know?",
+            Description = $"`{fact[0].Fact}`",
+            Color = DiscordColor.DarkGreen,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.Channel.SendMessageAsync(embed);
+    }
 }
