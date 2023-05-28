@@ -9,8 +9,11 @@ public class GetRandomFact : IApiRequest {
     
     public string GetRequest() {
         try {
+            var apiKey = ConfigHandler.GetConfig().ApiNinjasApiKey;
+            
             var client = new RestClient(BaseUrl);
-            var request = new RestRequest("facts?limit=1");
+            var request = new RestRequest("facts?limit=1").AddHeader("X-Api-Key", apiKey);
+            
             var response = client.Get(request).Content;
 
             if (response == null) {
