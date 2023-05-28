@@ -4,10 +4,10 @@ using simplebot.Classes;
 
 namespace simplebot.Api; 
 
-public class GetRandomFact : IApiRequest {
+public class GetRandomFact : ApiRequest {
     private const string BaseUrl = "https://api.api-ninjas.com/v1/";
-    
-    public string GetRequest() {
+
+    private protected override string GetRequest() {
         try {
             var apiKey = ConfigHandler.GetConfig().ApiNinjasApiKey;
             

@@ -4,10 +4,10 @@ using simplebot.Classes;
 
 namespace simplebot.Api; 
 
-public class GetExcuse : IApiRequest {
+public class GetExcuse : ApiRequest {
     private const string BaseUrl = "https://excuser-three.vercel.app/v1/";
-    
-     public string GetRequest() {
+
+    private protected override string GetRequest() {
         try {
             var client = new RestClient(BaseUrl);
             var request = new RestRequest("excuse");
