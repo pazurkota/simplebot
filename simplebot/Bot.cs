@@ -50,6 +50,7 @@ public class Bot {
         // commands registration
         Commands.RegisterCommands<UtilityCommands>();
         Commands.RegisterCommands<ModerationCommand>();
+        Commands.RegisterCommands<FunCommands>();
         
         await Client.ConnectAsync();
         await Task.Delay(-1); // make the bot stay online
