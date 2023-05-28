@@ -1,7 +1,8 @@
-﻿namespace simplebot.Classes; 
+﻿using Newtonsoft.Json;
+
+namespace simplebot.Classes; 
 
 public class ExcuseClass {
-    public int Id { get; set; }
-    public string Excuse { get; set; } = null!;
-    public string Category { get; set; } = null!;
+    [JsonProperty("excuse")] public string Excuse { get; set; } = null!;
+    [JsonProperty("category")] public string Category { get; set; } = null!;
 }
