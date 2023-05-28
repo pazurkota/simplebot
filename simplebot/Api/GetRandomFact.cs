@@ -1,22 +1,22 @@
-﻿using RestSharp;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using simplebot.Classes;
 
 namespace simplebot.Api; 
 
-public class GetExcuse : IApiRequest {
-    private const string BaseUrl = "https://excuser-three.vercel.app/v1/";
+public class GetRandomFact : IApiRequest {
+    private const string BaseUrl = "https://api.api-ninjas.com/v1/";
     
-     public string GetRequest() {
+    public string GetRequest() {
         try {
             var client = new RestClient(BaseUrl);
-            var request = new RestRequest("excuse");
+            var request = new RestRequest("facts?limit=1");
             var response = client.Get(request).Content;
-            
+
             if (response == null) {
                 throw new Exception("Response is null");
             }
-            
+
             return response;
         }
         catch (Exception e) {
@@ -25,16 +25,16 @@ public class GetExcuse : IApiRequest {
         }
     }
 
-    public List<ExcuseClass> ParseData() {
+    public FactClass ParseData() {
         try {
             var data = GetRequest();
-            var excuse = JsonConvert.DeserializeObject<List<ExcuseClass>>(data);
+            var fact = JsonConvert.DeserializeObject<FactClass>(data);
 
-            if (excuse == null) {
-                throw new Exception("Excuse is null");
+            if (fact == null) {
+                throw new Exception("Fact is null");
             }
             
-            return excuse;
+            return fact;
         }
         catch (Exception e) {
             Console.WriteLine(e);
