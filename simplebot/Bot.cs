@@ -34,7 +34,7 @@ public class Bot {
             StringPrefixes = new [] { json.Prefix },
             EnableMentionPrefix = true,
             EnableDms = true,
-            EnableDefaultHelp = false
+            EnableDefaultHelp = true
         };
 
         Commands = Client.UseCommandsNext(commandsConfig);
