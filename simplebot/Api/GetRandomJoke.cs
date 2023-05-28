@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace simplebot.Api; 
 
-public class GetJoke : ApiRequest {
+public class GetRandomJoke : ApiRequest {
     private const string BaseUrl = "https://api.api-ninjas.com/v1/";
     
     protected override string GetRequest() {
