@@ -15,19 +15,11 @@ public class Bot {
     public InteractivityExtension Interactivity { get; private set; }
 
     public async Task RunAsync() {
-        string json;
-
-        await using (var fs = File.OpenRead("config.json")) {
-            using (var sr = new StreamReader(fs, new UTF8Encoding(false))) {
-                json = await sr.ReadToEndAsync().ConfigureAwait(false);
-            }
-        }
-        
-        var configJson = JsonConvert.DeserializeObject<Config>(json);
+        var json = ConfigHandler.GetConfig();
 
         var config = new DiscordConfiguration {
             Intents = DiscordIntents.All,
-            Token = configJson.Token,
+            Token = json.Token,
             TokenType = TokenType.Bot,
             AutoReconnect = true,
             MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
@@ -39,7 +31,7 @@ public class Bot {
         });
 
         var commandsConfig = new CommandsNextConfiguration() {
-            StringPrefixes = new [] {configJson.Prefix},
+            StringPrefixes = new [] { json.Prefix },
             EnableMentionPrefix = true,
             EnableDms = true,
             EnableDefaultHelp = false
