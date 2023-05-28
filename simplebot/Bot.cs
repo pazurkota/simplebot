@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
@@ -34,7 +35,7 @@ public class Bot {
             StringPrefixes = new [] { json.Prefix },
             EnableMentionPrefix = true,
             EnableDms = true,
-            EnableDefaultHelp = false
+            EnableDefaultHelp = true
         };
 
         Commands = Client.UseCommandsNext(commandsConfig);
@@ -44,7 +45,7 @@ public class Bot {
         Commands.RegisterCommands<ModerationCommand>();
         Commands.RegisterCommands<FunCommands>();
         
-        await Client.ConnectAsync();
+        await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online
     }
     
