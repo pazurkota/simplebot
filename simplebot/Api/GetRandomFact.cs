@@ -7,7 +7,7 @@ namespace simplebot.Api;
 public class GetRandomFact : ApiRequest {
     private const string BaseUrl = "https://api.api-ninjas.com/v1/";
 
-    private protected override string GetRequest() {
+    protected override string GetRequest() {
         try {
             var apiKey = ConfigHandler.GetConfig().ApiNinjasApiKey;
             
@@ -28,7 +28,7 @@ public class GetRandomFact : ApiRequest {
         }
     }
 
-    public List<FactClass> ParseData() {
+    public override List<FactClass> ParseData<FactClass>() {
         try {
             var data = GetRequest();
             var fact = JsonConvert.DeserializeObject<List<FactClass>>(data);

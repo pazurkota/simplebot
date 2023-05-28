@@ -7,7 +7,7 @@ namespace simplebot.Api;
 public class GetExcuse : ApiRequest {
     private const string BaseUrl = "https://excuser-three.vercel.app/v1/";
 
-    private protected override string GetRequest() {
+    protected override string GetRequest() {
         try {
             var client = new RestClient(BaseUrl);
             var request = new RestRequest("excuse");
@@ -25,7 +25,7 @@ public class GetExcuse : ApiRequest {
         }
     }
 
-    public List<ExcuseClass> ParseData() {
+    public override List<ExcuseClass> ParseData<ExcuseClass>() {
         try {
             var data = GetRequest();
             var excuse = JsonConvert.DeserializeObject<List<ExcuseClass>>(data);

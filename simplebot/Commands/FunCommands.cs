@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using simplebot.Api;
+using simplebot.Classes;
 
 namespace simplebot.Commands; 
 
@@ -30,7 +31,7 @@ public class FunCommands : BaseCommandModule {
 
     [Command("excuse")]
     public async Task ExcuseAsync(CommandContext ctx) {
-        var excuse = new GetExcuse().ParseData();
+        var excuse = new GetExcuse().ParseData<ExcuseClass>();
         
         var embed = new DiscordEmbedBuilder() {
             Title = "Random Excuse",
@@ -44,7 +45,7 @@ public class FunCommands : BaseCommandModule {
 
     [Command("randomfact")]
     public async Task RandomFactAsync(CommandContext ctx) {
-        var fact = new GetRandomFact().ParseData();
+        var fact = new GetRandomFact().ParseData<FactClass>();
 
         var embed = new DiscordEmbedBuilder() {
             Title = ":question: Did you know?",
