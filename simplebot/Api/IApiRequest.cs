@@ -1,6 +1,5 @@
 ﻿namespace simplebot.Api; 
 
 public interface IApiRequest {
-    string GetRequest();
-    List<T> ParseData<T>();
+    List<T> ParseData<T>(string endpoint);
 }

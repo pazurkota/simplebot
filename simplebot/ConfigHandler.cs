@@ -2,7 +2,7 @@
 
 namespace simplebot; 
 
-public class ConfigHandler {
+public static class ConfigHandler {
     public static Config GetConfig() {
         try {
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));

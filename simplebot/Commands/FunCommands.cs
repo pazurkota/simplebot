@@ -59,7 +59,7 @@ public class FunCommands : BaseCommandModule {
 
     [Command("joke")]
     public async Task RandomJokeAsync(CommandContext ctx) {
-        var joke = new GetRandomJoke().ParseData<JokeClass>();
+        var joke = new NinjaApi().ParseData<JokeClass>("jokes");
         
         var embed = new DiscordEmbedBuilder() {
             Title = ":rofl: Random joke:",
