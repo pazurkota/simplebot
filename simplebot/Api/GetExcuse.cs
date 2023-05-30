@@ -4,7 +4,7 @@ using simplebot.Classes;
 
 namespace simplebot.Api; 
 
-public class GetExcuse : IApiRequest {
+public class GetExcuse {
     private const string BaseUrl = "https://excuser-three.vercel.app/v1/";
 
     private string GetRequest() {
@@ -25,10 +25,10 @@ public class GetExcuse : IApiRequest {
         }
     }
 
-    public List<T> ParseData<T>(string endpoint) {
+    public List<ExcuseClass> ParseData() {
         try {
             var data = GetRequest();
-            var json = JsonConvert.DeserializeObject<List<T>>(data);
+            var json = JsonConvert.DeserializeObject<List<ExcuseClass>>(data);
 
             if (json == null) {
                 throw new Exception("Excuse is null");
