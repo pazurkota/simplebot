@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace simplebot.Api; 
 
-public class NinjaApi : IApiRequest {
+public class ApiNinjasHandler : IApiRequest {
     private const string BaseUrl = "https://api.api-ninjas.com/v1/";
 
     private string GetRequest(string endpoint) {

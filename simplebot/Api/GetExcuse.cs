@@ -4,10 +4,10 @@ using simplebot.Classes;
 
 namespace simplebot.Api; 
 
-public class GetExcuse : ApiRequest {
+public class GetExcuse : IApiRequest {
     private const string BaseUrl = "https://excuser-three.vercel.app/v1/";
 
-    protected override string GetRequest() {
+    private string GetRequest() {
         try {
             var client = new RestClient(BaseUrl);
             var request = new RestRequest("excuse");
@@ -25,16 +25,16 @@ public class GetExcuse : ApiRequest {
         }
     }
 
-    public override List<ExcuseClass> ParseData<ExcuseClass>() {
+    public List<T> ParseData<T>(string endpoint) {
         try {
             var data = GetRequest();
-            var excuse = JsonConvert.DeserializeObject<List<ExcuseClass>>(data);
+            var json = JsonConvert.DeserializeObject<List<T>>(data);
 
-            if (excuse == null) {
+            if (json == null) {
                 throw new Exception("Excuse is null");
             }
             
-            return excuse;
+            return json;
         }
         catch (Exception e) {
             Console.WriteLine(e);
