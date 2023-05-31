@@ -31,7 +31,10 @@ public class FunCommands : BaseCommandModule {
 
     [Command("excuse")]
     public async Task ExcuseAsync(CommandContext ctx) {
-        var excuse = new GetExcuse().ParseData();
+        IDataFetcher fetcher = new ExcuseApiFetcher();
+        IDataParser parser = new ExcuseApiParser();
+        
+        var excuse = new ExcuseApiProcessor(fetcher, parser).ProcessData();
         
         var embed = new DiscordEmbedBuilder() {
             Title = "Random Excuse",
