@@ -31,7 +31,10 @@ public class FunCommands : BaseCommandModule {
 
     [Command("excuse")]
     public async Task ExcuseAsync(CommandContext ctx) {
-        var excuse = new GetExcuse().ParseData();
+        IDataFetcher fetcher = new ExcuseApiFetcher();
+        IDataParser parser = new ExcuseApiParser();
+        
+        var excuse = new ExcuseApiProcessor(fetcher, parser).ProcessData();
         
         var embed = new DiscordEmbedBuilder() {
             Title = "Random Excuse",
@@ -45,7 +48,10 @@ public class FunCommands : BaseCommandModule {
 
     [Command("fact")]
     public async Task RandomFactAsync(CommandContext ctx) {
-        var fact = new ApiNinjasHandler().ParseData<FactClass>("facts");
+        IDataFetcher fetcher = new FactApiFetcher();
+        IDataParser parser = new FactApiParser();
+        
+        var fact = new FactApiProcessor(fetcher, parser).ProcessData();
 
         var embed = new DiscordEmbedBuilder() {
             Title = ":question: Did you know:",
@@ -59,7 +65,10 @@ public class FunCommands : BaseCommandModule {
 
     [Command("joke")]
     public async Task RandomJokeAsync(CommandContext ctx) {
-        var joke = new ApiNinjasHandler().ParseData<JokeClass>("jokes");
+        IDataFetcher fetcher = new JokeApiFetcher();
+        IDataParser parser = new JokeApiParser();
+        
+        var joke = new JokeApiProcessor(fetcher, parser).ProcessData();
         
         var embed = new DiscordEmbedBuilder() {
             Title = ":rofl: Random joke:",
