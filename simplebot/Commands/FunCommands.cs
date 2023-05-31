@@ -45,11 +45,11 @@ public class FunCommands : BaseCommandModule {
 
     [Command("fact")]
     public async Task RandomFactAsync(CommandContext ctx) {
-        var fact = new ApiNinjasHandler().ParseData<FactClass>("facts");
+        // var fact = new ApiNinjasHandler().ParseData<FactClass>("facts");
 
         var embed = new DiscordEmbedBuilder() {
             Title = ":question: Did you know:",
-            Description = $"`{fact[0].Fact}`",
+            // Description = $"`{fact[0].Fact}`",
             Color = DiscordColor.DarkGreen,
             Timestamp = DateTime.Now
         };
@@ -59,7 +59,10 @@ public class FunCommands : BaseCommandModule {
 
     [Command("joke")]
     public async Task RandomJokeAsync(CommandContext ctx) {
-        var joke = new ApiNinjasHandler().ParseData<JokeClass>("jokes");
+        IDataFetcher fetcher = new JokeApiFetcher();
+        IDataParser parser = new JokeApiParser();
+        
+        var joke = new JokeApiProcessor(fetcher, parser).ProcessData();
         
         var embed = new DiscordEmbedBuilder() {
             Title = ":rofl: Random joke:",

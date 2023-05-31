@@ -5,5 +5,5 @@ public interface IDataFetcher {
 }
 
 public interface IDataParser {
-    List<T> ParseData<T>();
+    List<T> ParseData<T>(string content);
 }
