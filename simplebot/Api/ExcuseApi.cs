@@ -13,9 +13,9 @@ public class ExcuseApiFetcher : IDataFetcher {
         RestClient client = new RestClient(options);
         RestRequest request = new RestRequest("excuse");
 
-        string response = client.Get(request).Content;
+        string response = client.Get(request).Content ?? throw new Exception("Response is null or invalid");
 
-        return response ?? throw new Exception("Response is null or invalid");
+        return response;
     }
 }
 

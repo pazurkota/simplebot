@@ -15,9 +15,9 @@ public class FactApiFetcher : IDataFetcher {
         RestClient client = new RestClient(options);
         RestRequest request = new RestRequest("facts?limit=1").AddHeader("X-Api-Key", apiKey);
 
-        string content = client.Get(request).Content ?? throw new Exception("Response is null");
+        string response = client.Get(request).Content ?? throw new Exception("Response is null or invalid");
         
-        return content;
+        return response;
     }
 }
 

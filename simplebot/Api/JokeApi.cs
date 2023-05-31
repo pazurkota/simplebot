@@ -15,9 +15,9 @@ public class JokeApiFetcher : IDataFetcher {
         RestClient client = new RestClient(options);
         RestRequest request = new RestRequest("jokes?limit=1").AddHeader("X-Api-Key", apiKey);
         
-        string response = client.Get(request).Content;
+        string response = client.Get(request).Content ?? throw new Exception("Response is null or invalid");
 
-        return response ?? throw new Exception("Response is null");
+        return response;
     }
 }
 
