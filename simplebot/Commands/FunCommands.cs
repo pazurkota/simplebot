@@ -48,11 +48,14 @@ public class FunCommands : BaseCommandModule {
 
     [Command("fact")]
     public async Task RandomFactAsync(CommandContext ctx) {
-        // var fact = new ApiNinjasHandler().ParseData<FactClass>("facts");
+        IDataFetcher fetcher = new FactApiFetcher();
+        IDataParser parser = new FactApiParser();
+        
+        var fact = new FactApiProcessor(fetcher, parser).ProcessData();
 
         var embed = new DiscordEmbedBuilder() {
             Title = ":question: Did you know:",
-            // Description = $"`{fact[0].Fact}`",
+            Description = $"`{fact[0].Fact}`",
             Color = DiscordColor.DarkGreen,
             Timestamp = DateTime.Now
         };
