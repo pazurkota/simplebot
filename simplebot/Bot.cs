@@ -38,15 +38,16 @@ public class Bot {
             EnableDms = true,
             EnableDefaultHelp = true
         };
-
-        var slashCommandConfig = Client.UseSlashCommands();
-
+        
         Commands = Client.UseCommandsNext(commandsConfig);
+        var slashCommandConfig = Client.UseSlashCommands();
         
         // commands registration
         Commands.RegisterCommands<UtilityCommands>();
         Commands.RegisterCommands<ModerationCommand>();
-        Commands.RegisterCommands<FunCommands>();
+
+        // slash commands registration
+        slashCommandConfig.RegisterCommands<FunCommands>();
         
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online

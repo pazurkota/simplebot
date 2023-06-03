@@ -1,14 +1,18 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
 using simplebot.Api;
-using simplebot.Classes;
 
 namespace simplebot.Commands; 
 
-public class FunCommands : BaseCommandModule {
-    [Command("8ball")]
-    public async Task EightBallAsync(CommandContext ctx, string input) {
+public class FunCommands : ApplicationCommandModule {
+    [SlashCommand("8ball", "Ask the magic 8ball a question")]
+    public async Task EightBallAsync(InteractionContext ctx, [Option("input", "Type in everything you want")] string input) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         var responses = new[] {
             "Yes",
             "No",
@@ -29,8 +33,11 @@ public class FunCommands : BaseCommandModule {
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("excuse")]
-    public async Task ExcuseAsync(CommandContext ctx) {
+    [SlashCommand("excuse", "Get a random excuse")]
+    public async Task ExcuseAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         IDataFetcher fetcher = new ExcuseApiFetcher();
         IDataParser parser = new ExcuseApiParser();
         
@@ -46,8 +53,11 @@ public class FunCommands : BaseCommandModule {
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("fact")]
-    public async Task RandomFactAsync(CommandContext ctx) {
+    [SlashCommand("fact", "Get a random fact")]
+    public async Task RandomFactAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         IDataFetcher fetcher = new FactApiFetcher();
         IDataParser parser = new FactApiParser();
         
@@ -63,8 +73,11 @@ public class FunCommands : BaseCommandModule {
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("joke")]
-    public async Task RandomJokeAsync(CommandContext ctx) {
+    [SlashCommand("joke", "Get a random joke")]
+    public async Task RandomJokeAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         IDataFetcher fetcher = new JokeApiFetcher();
         IDataParser parser = new JokeApiParser();
         
