@@ -44,10 +44,10 @@ public class Bot {
         
         // commands registration
         Commands.RegisterCommands<UtilityCommands>();
-        Commands.RegisterCommands<ModerationCommand>();
 
         // slash commands registration
         slashCommandConfig.RegisterCommands<FunCommands>();
+        slashCommandConfig.RegisterCommands<ModerationCommands>();
         
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online
