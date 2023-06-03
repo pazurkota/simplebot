@@ -6,6 +6,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.SlashCommands;
 using simplebot.Commands;
 
 namespace simplebot; 
@@ -37,6 +38,8 @@ public class Bot {
             EnableDms = true,
             EnableDefaultHelp = true
         };
+
+        var slashCommandConfig = Client.UseSlashCommands();
 
         Commands = Client.UseCommandsNext(commandsConfig);
         
