@@ -34,8 +34,6 @@ public class Bot {
 
         var slashCommandConfig = Client.UseSlashCommands();
         
-        // commands registration
-
         // slash commands registration
         slashCommandConfig.RegisterCommands<UtilityCommands>();
         slashCommandConfig.RegisterCommands<FunCommands>();
