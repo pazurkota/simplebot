@@ -28,9 +28,13 @@ public class Bot {
         };
         
         Client = new DiscordClient(config);
+        
         Client.UseInteractivity(new InteractivityConfiguration {
             Timeout = TimeSpan.FromMinutes(2)
         });
+        
+        Client.Ready += OnClientReady;
+        Client.ComponentInteractionCreated += ButtonPressed;
 
         var slashCommandConfig = Client.UseSlashCommands();
         
@@ -42,8 +46,12 @@ public class Bot {
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online
     }
-    
-    private Task OnClientReady(ReadyEventArgs e) {
+
+    private Task OnClientReady(DiscordClient sender, ReadyEventArgs args) {
+        return Task.CompletedTask;
+    }
+
+    private Task ButtonPressed(DiscordClient client, ComponentInteractionCreateEventArgs e) {
         return Task.CompletedTask;
     }
 }
