@@ -2,23 +2,32 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
 
 namespace simplebot.Commands; 
 
-public class UtilityCommands : BaseCommandModule {
+public class UtilityCommands : ApplicationCommandModule {
     
-    [Command("ping")] 
-    public async Task PingAsync(CommandContext ctx) {
+    [SlashCommand("ping", "Get the current client ping")]
+    public async Task PingAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         var embed = new DiscordEmbedBuilder {
-            Description = $":ping_pong: Pong! Your current ping is: {ctx.Client.Ping}ms",
+            Description = $":ping_pong: Pong! Current client ping is: {ctx.Client.Ping}ms",
             Color = DiscordColor.Green
         };
 
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("whois")]
-    public async Task WhoIsAsync(CommandContext ctx, DiscordMember member) {
+    [SlashCommand("whois", "Get information about a user")]
+    public async Task WhoIsAsync(InteractionContext ctx, [Option("user", "Get specified user")] DiscordUser user) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
+        DiscordMember member = (DiscordMember) user;
+        
         var embed = new DiscordEmbedBuilder() {
             Title = $"Information about {member.DisplayName}",
             Description = $"**Username:** {member.Username}#{member.Discriminator}\n" +
@@ -40,8 +49,11 @@ public class UtilityCommands : BaseCommandModule {
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("serverinfo")]
-    public async Task ServerInfoAsync(CommandContext ctx) {
+    [SlashCommand("serverinfo", "Get information about the current server")]
+    public async Task ServerInfoAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         var embed = new DiscordEmbedBuilder() {
             Title = $"Information about {ctx.Guild.Name}:",
             Description = $"**Name:** {ctx.Guild.Name}\n" +

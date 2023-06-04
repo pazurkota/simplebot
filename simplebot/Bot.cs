@@ -6,6 +6,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.SlashCommands;
 using simplebot.Commands;
 
 namespace simplebot; 
@@ -31,19 +32,12 @@ public class Bot {
             Timeout = TimeSpan.FromMinutes(2)
         });
 
-        var commandsConfig = new CommandsNextConfiguration() {
-            StringPrefixes = new [] { json.Prefix },
-            EnableMentionPrefix = true,
-            EnableDms = true,
-            EnableDefaultHelp = true
-        };
-
-        Commands = Client.UseCommandsNext(commandsConfig);
+        var slashCommandConfig = Client.UseSlashCommands();
         
-        // commands registration
-        Commands.RegisterCommands<UtilityCommands>();
-        Commands.RegisterCommands<ModerationCommand>();
-        Commands.RegisterCommands<FunCommands>();
+        // slash commands registration
+        slashCommandConfig.RegisterCommands<UtilityCommands>();
+        slashCommandConfig.RegisterCommands<FunCommands>();
+        slashCommandConfig.RegisterCommands<ModerationCommands>();
         
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online
