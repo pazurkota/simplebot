@@ -32,20 +32,12 @@ public class Bot {
             Timeout = TimeSpan.FromMinutes(2)
         });
 
-        var commandsConfig = new CommandsNextConfiguration() {
-            StringPrefixes = new [] { json.Prefix },
-            EnableMentionPrefix = true,
-            EnableDms = true,
-            EnableDefaultHelp = true
-        };
-        
-        Commands = Client.UseCommandsNext(commandsConfig);
         var slashCommandConfig = Client.UseSlashCommands();
         
         // commands registration
-        Commands.RegisterCommands<UtilityCommands>();
 
         // slash commands registration
+        slashCommandConfig.RegisterCommands<UtilityCommands>();
         slashCommandConfig.RegisterCommands<FunCommands>();
         slashCommandConfig.RegisterCommands<ModerationCommands>();
         
