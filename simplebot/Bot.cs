@@ -52,6 +52,23 @@ public class Bot {
     }
 
     private Task ButtonPressed(DiscordClient client, ComponentInteractionCreateEventArgs e) {
-        return Task.CompletedTask;
+        switch (e.Interaction.Data.CustomId) {
+            case "fun":
+                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+                    new DiscordInteractionResponseBuilder().WithContent("Fun commands help menu"));
+                return Task.CompletedTask;
+            case "moderation":
+                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+                    new DiscordInteractionResponseBuilder().WithContent("Moderation commands help menu"));
+                return Task.CompletedTask;
+            case "utility":
+                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+                    new DiscordInteractionResponseBuilder().WithContent("Utility commands help menu"));
+                return Task.CompletedTask;
+            default: // generate error message
+                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+                    new DiscordInteractionResponseBuilder().WithContent("Something went wrong!"));
+                return Task.CompletedTask;
+        }
     }
 }
