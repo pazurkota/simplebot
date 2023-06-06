@@ -52,18 +52,51 @@ public class Bot {
     }
 
     private Task ButtonPressed(DiscordClient client, ComponentInteractionCreateEventArgs e) {
+        DiscordEmbed embed;
+        
         switch (e.Interaction.Data.CustomId) {
             case "fun":
-                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-                    new DiscordInteractionResponseBuilder().WithContent("Fun commands help menu"));
+                embed = new DiscordEmbedBuilder()
+                    .WithTitle("Fun commands help menu")
+                    .WithDescription("`/8ball [input]` - Get a random answer to your question\n" +
+                                     "`/excuse` - Get a random excuse\n" +
+                                     "`/fact` - Get a random fact\n" +
+                                     "`/joke` - Get a random joke")
+                    .WithColor(DiscordColor.Azure)
+                    .WithTimestamp(DateTime.Now);
+
+                e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
+                    new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
             case "moderation":
-                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-                    new DiscordInteractionResponseBuilder().WithContent("Moderation commands help menu"));
+                embed = new DiscordEmbedBuilder()
+                    .WithTitle("Moderation commands help menu")
+                    .WithDescription("`/purge [amount]` - Deletes a specified amount of messages\n" +
+                                     "`/kick [user] <reason>` - Kicks a specified user\n" +
+                                     "`/ban [user] <reason>` - Bans a specified user\n" +
+                                     "`/tempban [user] <time> <reason>` - Temporarily bans a specified user\n" +
+                                     "`/tempmute [user] <time> <reason>` - Temporarily bans a specified user\n" +
+                                     "`/unban [user]` - Unbans a specified user\n" +
+                                     "`/mute [user] <reason>` - Mutes a specified user\n" +
+                                     "`/unmute [user]` - Unmutes a specified user\n")
+                    .WithColor(DiscordColor.Azure)
+                    .WithTimestamp(DateTime.Now);
+
+                    e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
+                        new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
             case "utility":
-                e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-                    new DiscordInteractionResponseBuilder().WithContent("Utility commands help menu"));
+                embed = new DiscordEmbedBuilder()
+                    .WithTitle("Utility commands help menu")
+                    .WithDescription("`/ping` - Returns a client's ping\n" +
+                                     "`/serverinfo` - Returns information about the server\n" +
+                                     "`/whois [user]` - Returns information about a specified user\n" +
+                                     "`/help` - Returns this help menu\n")
+                    .WithColor(DiscordColor.Azure)
+                    .WithTimestamp(DateTime.Now);
+                
+                e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
+                    new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
             default: // generate error message
                 e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 

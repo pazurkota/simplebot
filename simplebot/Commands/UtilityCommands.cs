@@ -93,7 +93,7 @@ public class UtilityCommands : ApplicationCommandModule {
             .WithEmbed(new DiscordEmbedBuilder()
                 .WithTitle("Help Menu")
                 .WithDescription("Click one of the buttons below to get help with a specific category of commands")
-                .WithColor(DiscordColor.Green)
+                .WithColor(DiscordColor.Azure)
                 .WithTimestamp(DateTime.Now)
             )
             .AddComponents(funButton, moderationButton, utilityButton);
