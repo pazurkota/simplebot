@@ -80,4 +80,24 @@ public class UtilityCommands : ApplicationCommandModule {
 
         await ctx.Channel.SendMessageAsync(embed);
     }
+    
+    [SlashCommand("help", "Get help with the bot")]
+    public async Task HelpCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+        
+        var funButton = new DiscordButtonComponent(ButtonStyle.Success, "fun", "Fun Commands");
+        var moderationButton = new DiscordButtonComponent(ButtonStyle.Success, "moderation", "Moderation Commands");
+        var utilityButton = new DiscordButtonComponent(ButtonStyle.Success, "utility", "Utility Commands");
+
+        var embed = new DiscordMessageBuilder()
+            .WithEmbed(new DiscordEmbedBuilder()
+                .WithTitle("Help Menu")
+                .WithDescription("Click one of the buttons below to get help with a specific category of commands")
+                .WithColor(DiscordColor.Azure)
+                .WithTimestamp(DateTime.Now)
+            )
+            .AddComponents(funButton, moderationButton, utilityButton);
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed.Embed).AddComponents(embed.Components));
+    }
 }
