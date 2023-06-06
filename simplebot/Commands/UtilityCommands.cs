@@ -2,23 +2,32 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
 
 namespace simplebot.Commands; 
 
-public class UtilityCommands : BaseCommandModule {
+public class UtilityCommands : ApplicationCommandModule {
     
-    [Command("ping")] 
-    public async Task PingAsync(CommandContext ctx) {
+    [SlashCommand("ping", "Get the current client ping")]
+    public async Task PingAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         var embed = new DiscordEmbedBuilder {
-            Description = $":ping_pong: Pong! Your current ping is: {ctx.Client.Ping}ms",
+            Description = $":ping_pong: Pong! Current client ping is: {ctx.Client.Ping}ms",
             Color = DiscordColor.Green
         };
 
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("whois")]
-    public async Task WhoIsAsync(CommandContext ctx, DiscordMember member) {
+    [SlashCommand("whois", "Get information about a user")]
+    public async Task WhoIsAsync(InteractionContext ctx, [Option("user", "Get specified user")] DiscordUser user) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
+        DiscordMember member = (DiscordMember) user;
+        
         var embed = new DiscordEmbedBuilder() {
             Title = $"Information about {member.DisplayName}",
             Description = $"**Username:** {member.Username}#{member.Discriminator}\n" +
@@ -40,8 +49,11 @@ public class UtilityCommands : BaseCommandModule {
         await ctx.Channel.SendMessageAsync(embed);
     }
 
-    [Command("serverinfo")]
-    public async Task ServerInfoAsync(CommandContext ctx) {
+    [SlashCommand("serverinfo", "Get information about the current server")]
+    public async Task ServerInfoAsync(InteractionContext ctx) {
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
+            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        
         var embed = new DiscordEmbedBuilder() {
             Title = $"Information about {ctx.Guild.Name}:",
             Description = $"**Name:** {ctx.Guild.Name}\n" +
@@ -67,5 +79,25 @@ public class UtilityCommands : BaseCommandModule {
         };
 
         await ctx.Channel.SendMessageAsync(embed);
+    }
+    
+    [SlashCommand("help", "Get help with the bot")]
+    public async Task HelpCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+        
+        var funButton = new DiscordButtonComponent(ButtonStyle.Success, "fun", "Fun Commands");
+        var moderationButton = new DiscordButtonComponent(ButtonStyle.Success, "moderation", "Moderation Commands");
+        var utilityButton = new DiscordButtonComponent(ButtonStyle.Success, "utility", "Utility Commands");
+
+        var embed = new DiscordMessageBuilder()
+            .WithEmbed(new DiscordEmbedBuilder()
+                .WithTitle("Help Menu")
+                .WithDescription("Click one of the buttons below to get help with a specific category of commands")
+                .WithColor(DiscordColor.Azure)
+                .WithTimestamp(DateTime.Now)
+            )
+            .AddComponents(funButton, moderationButton, utilityButton);
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed.Embed).AddComponents(embed.Components));
     }
 }
