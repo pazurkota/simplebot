@@ -26,7 +26,7 @@ public class MemeApiFetcher : IDataFetcher {
     }
 }
 
-public class MemeDataParser : ISingleDataParser {
+public class MemeApiParser : ISingleDataParser {
     public MemeClass ParseData<MemeClass>(string content) {
         try
         {

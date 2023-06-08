@@ -112,6 +112,26 @@ public class FunCommands : ApplicationCommandModule {
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed).WithContent($"{user.Mention}"));
     }
     
+    [SlashCommand("meme", "Get a random meme")]
+    public async Task RandomMemeAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        IDataFetcher fetcher = new MemeApiFetcher();
+        ISingleDataParser parser = new MemeApiParser();
+
+        var meme = new MemeApiProcessor(fetcher, parser).ProcessData();
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = $"{meme.Title}",
+            Description = $"From [r/{meme.SubReddit}]({meme.PostLink})",
+            ImageUrl = meme.ImageUrl,
+            Color = DiscordColor.Blurple,
+            Timestamp = DateTime.Now
+        };
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+
     [SlashCommand("generatememe", "Generate a meme")]
     public async Task GenerateMemeAsync(InteractionContext ctx,
     [Option("image", "The image you want to use")] string image,
