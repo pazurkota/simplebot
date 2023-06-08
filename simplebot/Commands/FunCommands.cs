@@ -72,7 +72,7 @@ public class FunCommands : ApplicationCommandModule {
         
         await ctx.Channel.SendMessageAsync(embed);
     }
-
+    
     [SlashCommand("joke", "Get a random joke")]
     public async Task RandomJokeAsync(InteractionContext ctx) {
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
@@ -92,7 +92,26 @@ public class FunCommands : ApplicationCommandModule {
         
         await ctx.Channel.SendMessageAsync(embed);
     }
+    
+    [SlashCommand("insult", "Insult someone")]
+    public async Task InsultAsync(InteractionContext ctx, [Option("user", "Choose a user to insult")] DiscordUser user) {
+        await ctx.DeferAsync();
+        
+        IDataFetcher fetcher = new InsultApiFetcher();
+        ISingleDataParser parser = new InsultApiParser();
+        
+        var insult = new InsultApiProcessor(fetcher, parser).ProcessData();
 
+        var embed = new DiscordEmbedBuilder() {
+            Title = $":face_with_symbols_over_mouth: Hey, {user.Username}:",
+            Description = $"`{insult.Insult}`\nAuthor: `{insult.Author}`",
+            Color = DiscordColor.Red,
+            Timestamp = DateTime.Now
+        };
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed).WithContent($"{user.Mention}"));
+    }
+    
     [SlashCommand("generatememe", "Generate a meme")]
     public async Task GenerateMemeAsync(InteractionContext ctx,
     [Option("image", "The image you want to use")] string image,
