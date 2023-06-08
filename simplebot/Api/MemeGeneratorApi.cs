@@ -6,8 +6,10 @@ namespace simplebot.Api {
         public string FetchData(string endpoint) {
             try {
                 string baseUrl = "https://api.memegen.link/";
+                
                 string content = $"images/{endpoint}";
-
+                content = CheckForSpaces(content);
+                
                 string response = baseUrl + content;
                 return response;
 
@@ -15,6 +17,14 @@ namespace simplebot.Api {
                 Console.WriteLine($"Error: {exc}");
                 throw;
             }
+        }
+        
+        private string CheckForSpaces(string content) {
+            if (content.Contains(" ")) {
+                content = content.Replace(" ", "%20");
+            }
+
+            return content;
         }
     }
 }
