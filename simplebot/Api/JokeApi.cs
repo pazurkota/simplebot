@@ -22,8 +22,6 @@ public class JokeApiFetcher : IDataFetcher {
 }
 
 public class JokeApiParser : IDataParser {
-    private IDataParser _dataParserImplementation;
-
     public List<JokeClass> ParseData<JokeClass>(string content) {
         try {
             var data = content;

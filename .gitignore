@@ -9,4 +9,5 @@ riderModule.iml
 simplebot/config.json
 
 # VSCode specified
+/.vscode/
 simplebot/.vscode/
