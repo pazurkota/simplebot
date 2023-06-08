@@ -4,8 +4,12 @@ public interface IDataFetcher {
     string FetchData();
 }
 
-public interface IDataParser {
+public partial interface IDataParser {
     List<T> ParseData<T>(string content);
+}
+
+public partial interface ISingleDataParser {
+    T ParseData<T>(string content);
 }
 
 public interface IContentFetcher {
