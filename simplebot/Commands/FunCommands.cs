@@ -92,4 +92,25 @@ public class FunCommands : ApplicationCommandModule {
         
         await ctx.Channel.SendMessageAsync(embed);
     }
+
+    [SlashCommand("generatememe", "Generate a meme")]
+    public async Task GenerateMemeAsync(InteractionContext ctx,
+    [Option("image", "The image you want to use")] string image,
+    [Option("top", "The text you want to put on top of the image")] string top) {
+
+        await ctx.DeferAsync();
+        
+        MemeGeneratorApi generator = new MemeGeneratorApi();
+        string content = generator.FetchData($"{image}/{top}");
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = ":frame_photo: Generated meme:",
+            Description = $"[Download]({content})",
+            ImageUrl = content,
+            Color = DiscordColor.Blurple,
+            Timestamp = DateTime.Now
+        };
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
 }

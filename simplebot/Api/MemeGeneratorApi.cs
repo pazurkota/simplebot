@@ -4,16 +4,11 @@ using RestSharp;
 namespace simplebot.Api {
     public class MemeGeneratorApi : IContentFetcher {
         public string FetchData(string endpoint) {
-            try{
-                RestClientOptions options = new RestClientOptions("https://api.memegen.link/") {
-                    ThrowOnAnyError = true
-                };
+            try {
+                string baseUrl = "https://api.memegen.link/";
+                string content = $"images/{endpoint}";
 
-                RestClient client = new RestClient(options);
-                RestRequest request = new RestRequest($"/images/{endpoint}");
-                
-                string response = client.Get(request).Content ?? throw new Exception("Response is null or invalid");
-
+                string response = baseUrl + content;
                 return response;
 
             } catch(Exception exc) {
