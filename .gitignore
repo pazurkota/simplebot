@@ -7,3 +7,6 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 simplebot/config.json
+
+# VSCode specified
+simplebot/.vscode/
