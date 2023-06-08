@@ -1,4 +1,4 @@
-using Newtonsof.Json;
+using Newtonsoft.Json;
 
 namespace simplebot.Classes;
 
