@@ -80,6 +80,20 @@ public class UtilityCommands : ApplicationCommandModule {
 
         await ctx.Channel.SendMessageAsync(embed);
     }
+
+    [SlashCommand("repo", "Get the link to the bot's GitHub repository")]
+    public async Task RepoCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "GitHub Repository:",
+            Description = "**Official repository for this bot:**\nhttps://github.com/pazurkota/simplebot",
+            Color = DiscordColor.Azure,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
     
     [SlashCommand("help", "Get help with the bot")]
     public async Task HelpCommandAsync(InteractionContext ctx) {
