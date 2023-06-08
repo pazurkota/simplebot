@@ -94,7 +94,7 @@ public class Bot {
                     .WithDescription("`/ping` - Returns a client's ping\n" +
                                      "`/serverinfo` - Returns information about the server\n" +
                                      "`/whois [user]` - Returns information about a specified user\n" +
-                                     "`/help` - Returns this help menu\n + , " +
+                                     "`/help` - Returns this help menu\n" +
                                      "`/repo` - Return the link to the bot's GitHub repository\n" +
                                      "`/support` - Return the link to the bot's support server\n" +
                                      "`/uptime` - Returns the bot's uptime\n")
