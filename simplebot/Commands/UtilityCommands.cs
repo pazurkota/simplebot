@@ -1,8 +1,7 @@
 ﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using System.Diagnostics;
 
 namespace simplebot.Commands; 
 
@@ -88,6 +87,20 @@ public class UtilityCommands : ApplicationCommandModule {
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = "GitHub Repository:",
             Description = "**Official repository for this bot:**\nhttps://github.com/pazurkota/simplebot",
+            Color = DiscordColor.Azure,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+    
+    [SlashCommand("uptime", "Get the bot's uptime")]
+    public async Task UptimeCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        var embed = new DiscordEmbedBuilder() {
+            Title = ":clock1: Bot Uptime:",
+            Description = $"**Current uptime:** `{DateTime.Now - Process.GetCurrentProcess().StartTime}`",
             Color = DiscordColor.Azure,
             Timestamp = DateTime.Now
         };
