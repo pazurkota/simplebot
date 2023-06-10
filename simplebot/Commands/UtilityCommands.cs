@@ -108,6 +108,20 @@ public class UtilityCommands : ApplicationCommandModule {
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
     
+    [SlashCommand("support", "Get the link to the bot's support server")]
+    public async Task SupportCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Support Server:",
+            Description = "**Official support server for this bot:**\nhttps://discord.gg/aunWfBPpDY",
+            Color = DiscordColor.Azure,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+    
     [SlashCommand("help", "Get help with the bot")]
     public async Task HelpCommandAsync(InteractionContext ctx) {
         await ctx.DeferAsync();
