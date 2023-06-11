@@ -4,7 +4,7 @@ Simple Discord bot to entertain your server
 
 ## Installation
 ### Requirements:
-- [.NET 7.0 or newer](https://dotnet.microsoft.com/en-us/download).
+- [.NET 7.0 or newer](https://dotnet.microsoft.com/en-us/download)
 - [API Ninjas API Key](https://api-ninjas.com/api)
 - [Discord Application (bot)](https://discord.com/developers/applications)
 
@@ -39,4 +39,6 @@ Full command list is at `/help`
 
 ### API's:
 - [Excuser API](https://excuser-three.vercel.app)
+- [Memegen API](https://api.memegen.link/docs)
+- [Meme API](https://github.com/D3vd/Meme_Api)
 - [API Ninjas](https://api-ninjas.com/api)

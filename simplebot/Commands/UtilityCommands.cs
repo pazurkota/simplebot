@@ -9,25 +9,23 @@ public class UtilityCommands : ApplicationCommandModule {
     
     [SlashCommand("ping", "Get the current client ping")]
     public async Task PingAsync(InteractionContext ctx) {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        await ctx.DeferAsync();
         
-        var embed = new DiscordEmbedBuilder {
+        DiscordEmbed embed = new DiscordEmbedBuilder {
             Description = $":ping_pong: Pong! Current client ping is: {ctx.Client.Ping}ms",
             Color = DiscordColor.Green
         };
 
-        await ctx.Channel.SendMessageAsync(embed);
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
     [SlashCommand("whois", "Get information about a user")]
     public async Task WhoIsAsync(InteractionContext ctx, [Option("user", "Get specified user")] DiscordUser user) {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        await ctx.DeferAsync();
         
         DiscordMember member = (DiscordMember) user;
         
-        var embed = new DiscordEmbedBuilder() {
+        DiscordEmbed embed = new DiscordEmbedBuilder {
             Title = $"Information about {member.DisplayName}",
             Description = $"**Username:** {member.Username}#{member.Discriminator}\n" +
                           $"**ID:** {member.Id}\n" +
@@ -44,16 +42,15 @@ public class UtilityCommands : ApplicationCommandModule {
             },
             Timestamp = DateTime.Now
         };
-        
-        await ctx.Channel.SendMessageAsync(embed);
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
     [SlashCommand("serverinfo", "Get information about the current server")]
     public async Task ServerInfoAsync(InteractionContext ctx) {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        await ctx.DeferAsync();
         
-        var embed = new DiscordEmbedBuilder() {
+        DiscordEmbed embed = new DiscordEmbedBuilder {
             Title = $"Information about {ctx.Guild.Name}:",
             Description = $"**Name:** {ctx.Guild.Name}\n" +
                           $"**ID:** {ctx.Guild.Id}\n" +
@@ -77,7 +74,7 @@ public class UtilityCommands : ApplicationCommandModule {
             Timestamp = DateTime.Now
         };
 
-        await ctx.Channel.SendMessageAsync(embed);
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
     [SlashCommand("repo", "Get the link to the bot's GitHub repository")]
