@@ -1,8 +1,7 @@
 using Newtonsoft.Json;
 using RestSharp;
-using simplebot.Classes;
 
-namespace simplebot.Api;
+namespace simplebot.Engine.Api;
 
 public class MemeApiFetcher : IDataFetcher {
     public string FetchData() {
@@ -55,9 +54,9 @@ public class MemeApiProcessor {
         _parser = parser;
     }
 
-    public MemeClass ProcessData(){
+    public simplebot.Engine.Classes.MemeClass ProcessData(){
         var data = _fetcher.FetchData();
-        var parsedData = _parser.ParseData<MemeClass>(data);
+        var parsedData = _parser.ParseData<simplebot.Engine.Classes.MemeClass>(data);
 
         return parsedData;
     }

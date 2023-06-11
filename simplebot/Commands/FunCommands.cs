@@ -3,7 +3,6 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using simplebot.Api;
 
 namespace simplebot.Commands; 
 
@@ -36,10 +35,10 @@ public class FunCommands : ApplicationCommandModule {
     public async Task ExcuseAsync(InteractionContext ctx) {
         await ctx.DeferAsync();
         
-        IDataFetcher fetcher = new ExcuseApiFetcher();
-        IDataParser parser = new ExcuseApiParser();
+        simplebot.Engine.Api.IDataFetcher fetcher = new simplebot.Engine.Api.ExcuseApiFetcher();
+        simplebot.Engine.Api.IDataParser parser = new simplebot.Engine.Api.ExcuseApiParser();
         
-        var excuse = new ExcuseApiProcessor(fetcher, parser).ProcessData();
+        var excuse = new simplebot.Engine.Api.ExcuseApiProcessor(fetcher, parser).ProcessData();
         
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = "Random Excuse",
@@ -55,10 +54,10 @@ public class FunCommands : ApplicationCommandModule {
     public async Task RandomFactAsync(InteractionContext ctx) {
         await ctx.DeferAsync();
         
-        IDataFetcher fetcher = new FactApiFetcher();
-        IDataParser parser = new FactApiParser();
+        simplebot.Engine.Api.IDataFetcher fetcher = new simplebot.Engine.Api.FactApiFetcher();
+        simplebot.Engine.Api.IDataParser parser = new simplebot.Engine.Api.FactApiParser();
         
-        var fact = new FactApiProcessor(fetcher, parser).ProcessData();
+        var fact = new simplebot.Engine.Api.FactApiProcessor(fetcher, parser).ProcessData();
 
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = ":question: Did you know:",
@@ -74,10 +73,10 @@ public class FunCommands : ApplicationCommandModule {
     public async Task RandomJokeAsync(InteractionContext ctx) {
         await ctx.DeferAsync();
         
-        IDataFetcher fetcher = new JokeApiFetcher();
-        IDataParser parser = new JokeApiParser();
+        simplebot.Engine.Api.IDataFetcher fetcher = new simplebot.Engine.Api.JokeApiFetcher();
+        simplebot.Engine.Api.IDataParser parser = new simplebot.Engine.Api.JokeApiParser();
         
-        var joke = new JokeApiProcessor(fetcher, parser).ProcessData();
+        var joke = new simplebot.Engine.Api.JokeApiProcessor(fetcher, parser).ProcessData();
         
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = ":rofl: Random joke:",
@@ -93,10 +92,10 @@ public class FunCommands : ApplicationCommandModule {
     public async Task InsultAsync(InteractionContext ctx, [Option("user", "Choose a user to insult")] DiscordUser user) {
         await ctx.DeferAsync();
         
-        IDataFetcher fetcher = new InsultApiFetcher();
-        ISingleDataParser parser = new InsultApiParser();
+        simplebot.Engine.Api.IDataFetcher fetcher = new simplebot.Engine.Api.InsultApiFetcher();
+        simplebot.Engine.Api.ISingleDataParser parser = new simplebot.Engine.Api.InsultApiParser();
         
-        var insult = new InsultApiProcessor(fetcher, parser).ProcessData();
+        var insult = new simplebot.Engine.Api.InsultApiProcessor(fetcher, parser).ProcessData();
 
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = $":face_with_symbols_over_mouth: Hey, {user.Username}:",
@@ -112,10 +111,10 @@ public class FunCommands : ApplicationCommandModule {
     public async Task RandomMemeAsync(InteractionContext ctx) {
         await ctx.DeferAsync();
 
-        IDataFetcher fetcher = new MemeApiFetcher();
-        ISingleDataParser parser = new MemeApiParser();
+        simplebot.Engine.Api.IDataFetcher fetcher = new simplebot.Engine.Api.MemeApiFetcher();
+        simplebot.Engine.Api.ISingleDataParser parser = new simplebot.Engine.Api.MemeApiParser();
 
-        var meme = new MemeApiProcessor(fetcher, parser).ProcessData();
+        var meme = new simplebot.Engine.Api.MemeApiProcessor(fetcher, parser).ProcessData();
 
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = $"{meme.Title}",
@@ -136,7 +135,7 @@ public class FunCommands : ApplicationCommandModule {
 
         await ctx.DeferAsync();
         
-        MemeGeneratorApi generator = new MemeGeneratorApi();
+        simplebot.Engine.Api.MemeGeneratorApi generator = new simplebot.Engine.Api.MemeGeneratorApi();
         string content = generator.FetchData($"{image}/{top}%2F{bottom}");
 
         DiscordEmbed embed = new DiscordEmbedBuilder() {

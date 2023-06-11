@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace simplebot.Classes;
+namespace simplebot.Engine.Classes;
 
 public class MemeClass {
     [JsonProperty("postLink")] public string PostLink { get; set; } = null!;

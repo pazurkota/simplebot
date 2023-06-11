@@ -1,6 +1,4 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -8,6 +6,7 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using simplebot.Commands;
+using simplebot.Configuration;
 
 namespace simplebot; 
 
@@ -17,7 +16,7 @@ public class Bot {
     public InteractivityExtension Interactivity { get; private set; }
 
     public async Task RunAsync() {
-        var json = ConfigHandler.GetConfig();
+        var json = Config.LoadConfig();
 
         var config = new DiscordConfiguration {
             Intents = DiscordIntents.All,

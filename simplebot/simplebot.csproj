@@ -16,4 +16,8 @@
       <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Engine\" />
+    </ItemGroup>
+
 </Project>

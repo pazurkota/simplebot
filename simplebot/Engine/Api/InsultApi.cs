@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using simplebot.Classes;
 
-namespace simplebot.Api; 
+namespace simplebot.Engine.Api; 
 
 public class InsultApiFetcher : IDataFetcher {
     public string FetchData() {
@@ -52,9 +51,9 @@ public class InsultApiProcessor {
         _parser = parser;
     }
     
-    public InsultClass ProcessData() {
+    public simplebot.Engine.Classes.InsultClass ProcessData() {
         var data = _fetcher.FetchData();
-        var parsedData = _parser.ParseData<InsultClass>(data);
+        var parsedData = _parser.ParseData<simplebot.Engine.Classes.InsultClass>(data);
 
         return parsedData;
     }

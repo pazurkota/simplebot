@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using simplebot.Classes;
+using simplebot.Configuration;
 
-namespace simplebot.Api; 
+namespace simplebot.Engine.Api; 
 
-public class FactApiFetcher : IDataFetcher {
+public class FactApiFetcher : simplebot.Engine.Api.IDataFetcher {
     public string FetchData() {
-        string apiKey = ConfigHandler.GetConfig().ApiNinjasApiKey;
+        string apiKey = Config.LoadConfig().ApiNinjasApiKey;
         
         RestClientOptions options = new RestClientOptions("https://api.api-ninjas.com/v1/") {
             ThrowOnAnyError = true
@@ -21,7 +21,7 @@ public class FactApiFetcher : IDataFetcher {
     }
 }
 
-public class FactApiParser : IDataParser {
+public class FactApiParser : simplebot.Engine.Api.IDataParser {
     public List<FactClass> ParseData<FactClass>(string content) {
         try {
             var data = content;
@@ -41,17 +41,17 @@ public class FactApiParser : IDataParser {
 }
 
 public class FactApiProcessor {
-    private readonly IDataFetcher _fetcher;
-    private readonly IDataParser _parser;
+    private readonly simplebot.Engine.Api.IDataFetcher _fetcher;
+    private readonly simplebot.Engine.Api.IDataParser _parser;
     
-    public FactApiProcessor(IDataFetcher fetcher, IDataParser parser) {
+    public FactApiProcessor(simplebot.Engine.Api.IDataFetcher fetcher, simplebot.Engine.Api.IDataParser parser) {
         _fetcher = fetcher;
         _parser = parser;
     }
     
-    public List<FactClass> ProcessData() {
+    public List<simplebot.Engine.Classes.FactClass> ProcessData() {
         var data = _fetcher.FetchData();
-        var parsedData = _parser.ParseData<FactClass>(data);
+        var parsedData = _parser.ParseData<simplebot.Engine.Classes.FactClass>(data);
 
         return parsedData;
     }
