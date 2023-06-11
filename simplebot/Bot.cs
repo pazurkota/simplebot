@@ -61,7 +61,10 @@ public class Bot {
                     .WithDescription("`/8ball [input]` - Get a random answer to your question\n" +
                                      "`/excuse` - Get a random excuse\n" +
                                      "`/fact` - Get a random fact\n" +
-                                     "`/joke` - Get a random joke")
+                                     "`/joke` - Get a random joke\n" +
+                                     "`/generatememe` Generate a meme\n" +
+                                     "`/meme` - Get a random meme\n" +
+                                     "`/insult [user]` - Roast a specified user\n")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
 
@@ -91,7 +94,10 @@ public class Bot {
                     .WithDescription("`/ping` - Returns a client's ping\n" +
                                      "`/serverinfo` - Returns information about the server\n" +
                                      "`/whois [user]` - Returns information about a specified user\n" +
-                                     "`/help` - Returns this help menu\n")
+                                     "`/help` - Returns this help menu\n" +
+                                     "`/repo` - Return the link to the bot's GitHub repository\n" +
+                                     "`/support` - Return the link to the bot's support server\n" +
+                                     "`/uptime` - Returns the bot's uptime\n")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
                 

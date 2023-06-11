@@ -1,8 +1,7 @@
 ﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using System.Diagnostics;
 
 namespace simplebot.Commands; 
 
@@ -10,25 +9,23 @@ public class UtilityCommands : ApplicationCommandModule {
     
     [SlashCommand("ping", "Get the current client ping")]
     public async Task PingAsync(InteractionContext ctx) {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        await ctx.DeferAsync();
         
-        var embed = new DiscordEmbedBuilder {
+        DiscordEmbed embed = new DiscordEmbedBuilder {
             Description = $":ping_pong: Pong! Current client ping is: {ctx.Client.Ping}ms",
             Color = DiscordColor.Green
         };
 
-        await ctx.Channel.SendMessageAsync(embed);
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
     [SlashCommand("whois", "Get information about a user")]
     public async Task WhoIsAsync(InteractionContext ctx, [Option("user", "Get specified user")] DiscordUser user) {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        await ctx.DeferAsync();
         
         DiscordMember member = (DiscordMember) user;
         
-        var embed = new DiscordEmbedBuilder() {
+        DiscordEmbed embed = new DiscordEmbedBuilder {
             Title = $"Information about {member.DisplayName}",
             Description = $"**Username:** {member.Username}#{member.Discriminator}\n" +
                           $"**ID:** {member.Id}\n" +
@@ -45,16 +42,15 @@ public class UtilityCommands : ApplicationCommandModule {
             },
             Timestamp = DateTime.Now
         };
-        
-        await ctx.Channel.SendMessageAsync(embed);
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
     [SlashCommand("serverinfo", "Get information about the current server")]
     public async Task ServerInfoAsync(InteractionContext ctx) {
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, 
-            new DiscordInteractionResponseBuilder().WithContent("Thinking..."));
+        await ctx.DeferAsync();
         
-        var embed = new DiscordEmbedBuilder() {
+        DiscordEmbed embed = new DiscordEmbedBuilder {
             Title = $"Information about {ctx.Guild.Name}:",
             Description = $"**Name:** {ctx.Guild.Name}\n" +
                           $"**ID:** {ctx.Guild.Id}\n" +
@@ -78,7 +74,49 @@ public class UtilityCommands : ApplicationCommandModule {
             Timestamp = DateTime.Now
         };
 
-        await ctx.Channel.SendMessageAsync(embed);
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+
+    [SlashCommand("repo", "Get the link to the bot's GitHub repository")]
+    public async Task RepoCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "GitHub Repository:",
+            Description = "**Official repository for this bot:**\nhttps://github.com/pazurkota/simplebot",
+            Color = DiscordColor.Azure,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+    
+    [SlashCommand("uptime", "Get the bot's uptime")]
+    public async Task UptimeCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        var embed = new DiscordEmbedBuilder() {
+            Title = ":clock1: Bot Uptime:",
+            Description = $"**Current uptime:** `{DateTime.Now - Process.GetCurrentProcess().StartTime}`",
+            Color = DiscordColor.Azure,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+    
+    [SlashCommand("support", "Get the link to the bot's support server")]
+    public async Task SupportCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Support Server:",
+            Description = "**Official support server for this bot:**\nhttps://discord.gg/aunWfBPpDY",
+            Color = DiscordColor.Azure,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
     
     [SlashCommand("help", "Get help with the bot")]

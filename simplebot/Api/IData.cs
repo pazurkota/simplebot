@@ -7,3 +7,11 @@ public interface IDataFetcher {
 public interface IDataParser {
     List<T> ParseData<T>(string content);
 }
+
+public interface ISingleDataParser {
+    T ParseData<T>(string content);
+}
+
+public interface IContentFetcher {
+    string FetchData(string endpoint);
+}
