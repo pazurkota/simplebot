@@ -1,6 +1,6 @@
 namespace simplebot.Engine.LevelEngine;
 
-public class DiscordUser {
+public class DUser {
     public string Username { get; set; } = null!;
     public string GuildId { get; set; } = null!;
     public string AvatarUrl { get; set; } = null!;

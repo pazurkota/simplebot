@@ -2,15 +2,23 @@
 
 namespace simplebot.Engine.LevelEngine; 
 
-public class Engine {
-    public bool StoreUserDetails(DiscordUser user) {
+public class LevelEngine {
+    public bool StoreUserDetails(DUser user) {
         try {
             string path = "Engine/LevelEngine/userinfo.json";
+            
+            if (!File.Exists(path)) {
+                File.Create(path).Dispose();
+                File.WriteAllText(path, "{\n\"members\": []\n}");
+            }
 
             string json = File.ReadAllText(path);
             JObject jsonObj = JObject.Parse(json);
 
-            var members = jsonObj["members"].ToObject<List<DiscordUser>>();
+            var members = jsonObj["members"].ToObject<List<DUser>>();
+            members.Add(user);
+
+            jsonObj["members"] = JArray.FromObject(members);
             File.WriteAllText(path, jsonObj.ToString());
 
             return true; // return true if the user was successfully stored
