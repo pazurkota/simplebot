@@ -14,5 +14,5 @@ simplebot/config.json
 simplebot/.vscode/
 
 # Project related files
-simplebot/Config/config.json # config
-simplebot/Engine/LevelEngine/userinfo.json # user information
+simplebot/Config/config.json 
+simplebot/Engine/LevelEngine/userinfo.json 
