@@ -17,7 +17,6 @@ public class LevelCommands : ApplicationCommandModule {
         DUser user = new DUser() {
             Username = username,
             GuildId = guildId.ToString(),
-            AvatarUrl = avatarUrl,
             Xp = XP,
             Level = level
         };
@@ -28,14 +27,13 @@ public class LevelCommands : ApplicationCommandModule {
         bool userExist = engine.CheckUserExist(username, guildId);
 
         if (userExist) {
+            DUser storedUser = engine.GetUser(username, guildId);
+
             DiscordEmbed embed = new DiscordEmbedBuilder() {
                 Title = "Profile",
-                Description = $"**Username:** {username}\n" +
-                              $"**Level:** {user.Level}\n" +
-                              $"**XP:** {user.Xp}\n" +
-                              $"**Avatar:** [Click here]({avatarUrl})",
-                Thumbnail = new() {
-                    Url = avatarUrl
+                Description = $"**Username:** `{storedUser.Username}`\n**Level:** `{storedUser.Level}`\n**XP:** `{storedUser.Xp}`",
+                Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
+                    Url = ctx.Member.AvatarUrl
                 },
                 Color = DiscordColor.Blurple,
                 Timestamp = DateTime.Now
@@ -50,7 +48,7 @@ public class LevelCommands : ApplicationCommandModule {
             if (isStored) {
                 embed = new DiscordEmbedBuilder() {
                     Title = "Profile",
-                    Description = "Your profile has been created!\nType `/profile` again to see your profile",
+                    Description = "*Your profile has been created!*\nType `/profile` again to see your profile",
                     Color = DiscordColor.Green,
                     Timestamp = DateTime.Now
                 };
@@ -58,7 +56,7 @@ public class LevelCommands : ApplicationCommandModule {
             else {
                 embed = new DiscordEmbedBuilder() {
                     Title = "Profile",
-                    Description = "Unknown error occured!\nYour profile was not created",
+                    Description = "*Unknown error occured!*\nYour profile was not created",
                     Color = DiscordColor.Red,
                     Timestamp = DateTime.Now
                 };

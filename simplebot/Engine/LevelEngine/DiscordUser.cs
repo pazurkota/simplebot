@@ -1,9 +1,8 @@
 namespace simplebot.Engine.LevelEngine;
 
 public class DUser {
-    public string Username { get; set; } = null!;
-    public string GuildId { get; set; } = null!;
-    public string AvatarUrl { get; set; } = null!;
-    public int Xp { get; set; }
-    public int Level { get; set; }
+    public string Username { get; init; } = null!;
+    public string GuildId { get; init; } = null!;
+    public int Xp { get; init; }
+    public int Level { get; init; }
 }

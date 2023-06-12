@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace simplebot.Engine.LevelEngine; 
 
@@ -40,4 +41,31 @@ public class LevelEngine {
 
         return user != null;
     }
+
+    public DUser GetUser(string username, ulong guildId) { //@TODO Create a method to get user from json file
+        using StreamReader sr = new StreamReader(Path);
+        
+        string json = sr.ReadToEnd();
+        LevelJsonFile jsonObj = JsonConvert.DeserializeObject<LevelJsonFile>(json);
+
+        foreach (DUser member in jsonObj.Members) {
+            if (member.Username == username && member.GuildId == guildId.ToString()) {
+                return new DUser() {
+                    Username = member.Username,
+                    GuildId = member.GuildId,
+                    Xp = member.Xp,
+                    Level = member.Level
+                };
+            }
+            else {
+                
+            }
+        }
+
+        return null;
+    }
+}
+
+internal sealed class LevelJsonFile {
+    [JsonProperty("members")] public List<DUser> Members { get; set; } = null!;
 }
