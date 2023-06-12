@@ -2,54 +2,69 @@
 using DSharpPlus.Entities;
 using simplebot.Engine.LevelEngine;
 
-namespace simplebot.Commands; 
+namespace simplebot.Commands;
 
 public class LevelCommands : ApplicationCommandModule {
     [SlashCommand("profile", "Shows your profile")]
     public async Task ProfileAsync(InteractionContext ctx) {
-        await ctx.DeferAsync();
-        
         string username = ctx.Member.Username;
-        string guildId = ctx.Guild.Id.ToString();
         string avatarUrl = ctx.Member.AvatarUrl;
+
+        ulong guildId = ctx.Guild.Id;
         int XP = 0;
         int level = 0;
 
         DUser user = new DUser() {
             Username = username,
-            GuildId = guildId,
+            GuildId = guildId.ToString(),
             AvatarUrl = avatarUrl,
             Xp = XP,
             Level = level
         };
+        
+        await ctx.DeferAsync();
 
         LevelEngine engine = new LevelEngine();
-        bool process = engine.StoreUserDetails(user);
+        bool userExist = engine.CheckUserExist(username, guildId);
 
-        if (process) {
+        if (userExist) {
             DiscordEmbed embed = new DiscordEmbedBuilder() {
                 Title = "Profile",
                 Description = $"**Username:** {username}\n" +
-                              $"**XP:** {XP}\n" +
-                              $"**Level:** {level}",
-                Color = DiscordColor.Azure,
-                Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
+                              $"**Level:** {user.Level}\n" +
+                              $"**XP:** {user.Xp}\n" +
+                              $"**Avatar:** [Click here]({avatarUrl})",
+                Thumbnail = new() {
                     Url = avatarUrl
                 },
+                Color = DiscordColor.Blurple,
                 Timestamp = DateTime.Now
             };
-            
+
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
         }
         else {
-            DiscordEmbed failed = new DiscordEmbedBuilder() {
-                Title = "Profile",
-                Description = "Failed to get your profile",
-                Color = DiscordColor.Red,
-                Timestamp = DateTime.Now
-            };
-            
-            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(failed));
+            bool isStored = engine.StoreUserDetails(user);
+            DiscordEmbed embed;
+
+            if (isStored) {
+                embed = new DiscordEmbedBuilder() {
+                    Title = "Profile",
+                    Description = "Your profile has been created!\nType `/profile` again to see your profile",
+                    Color = DiscordColor.Green,
+                    Timestamp = DateTime.Now
+                };
+            }
+            else {
+                embed = new DiscordEmbedBuilder() {
+                    Title = "Profile",
+                    Description = "Unknown error occured!\nYour profile was not created",
+                    Color = DiscordColor.Red,
+                    Timestamp = DateTime.Now
+                };
+            }
+
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
         }
     }
 }
