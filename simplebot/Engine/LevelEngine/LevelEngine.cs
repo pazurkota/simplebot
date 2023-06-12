@@ -42,7 +42,7 @@ public class LevelEngine {
         return user != null;
     }
 
-    public DUser GetUser(string username, ulong guildId) { //@TODO Create a method to get user from json file
+    public DUser GetUser(string username, ulong guildId) { 
         using StreamReader sr = new StreamReader(Path);
         
         string json = sr.ReadToEnd();
@@ -56,9 +56,6 @@ public class LevelEngine {
                     Xp = member.Xp,
                     Level = member.Level
                 };
-            }
-            else {
-                
             }
         }
 
