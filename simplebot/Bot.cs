@@ -7,6 +7,7 @@ using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using simplebot.Commands;
 using simplebot.Configuration;
+using simplebot.Engine.LevelEngine;
 
 namespace simplebot; 
 
@@ -34,6 +35,7 @@ public class Bot {
         
         Client.Ready += OnClientReady;
         Client.ComponentInteractionCreated += ButtonPressed;
+        Client.MessageCreated += MessageSendHandler;
 
         var slashCommandConfig = Client.UseSlashCommands();
         
@@ -48,6 +50,30 @@ public class Bot {
     }
 
     private Task OnClientReady(DiscordClient sender, ReadyEventArgs args) {
+        return Task.CompletedTask;
+    }
+    
+    private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
+        var levelEngine = new LevelEngine();
+        var addedXp = levelEngine.AddXp(e.Author.Username, e.Guild.Id);
+
+        if (levelEngine.LeveledUp) {
+            int level = levelEngine.GetUser(e.Author.Username, e.Guild.Id).Level;
+
+            DiscordEmbed embed = new DiscordEmbedBuilder() {
+                Title = "Level up!",
+                Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
+                              $"Your new current level: `{level}`",
+                Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
+                    Url = e.Author.AvatarUrl
+                },
+                Color = DiscordColor.Green,
+                Timestamp = DateTime.Now
+            };
+            
+            e.Channel.SendMessageAsync(e.Author.Mention, embed);
+        }
+        
         return Task.CompletedTask;
     }
 

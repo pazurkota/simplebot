@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using simplebot.Configuration;
 
 namespace simplebot.Engine.LevelEngine; 
 
 public class LevelEngine {
+    public bool LeveledUp;
     private const string Path = "Engine/LevelEngine/userinfo.json";
     
     public bool StoreUserDetails(DUser user) {
@@ -60,6 +62,38 @@ public class LevelEngine {
         }
 
         return null;
+    }
+
+    public bool AddXp(string username, ulong guildId) {
+        try {
+            double levelMultiplier = Config.LoadConfig().LevelMultiplier;
+            int levelCap = Config.LoadConfig().LevelCap;
+            
+            string json = File.ReadAllText(Path);
+            var jsonObj = JObject.Parse(json);
+            
+            var members = jsonObj["members"].ToObject<List<DUser>>();
+            
+            foreach (DUser member in members) {
+                if (member.Username == username && member.GuildId == guildId.ToString()) {
+                    member.Xp += levelMultiplier;
+                } 
+                if (member.Xp >= levelCap ) {
+                    LeveledUp = true;
+                    member.Level++;
+                    member.Xp = 0;
+                }
+            }
+            
+            jsonObj["members"] = JArray.FromObject(members);
+            File.WriteAllText(Path, JsonConvert.SerializeObject(jsonObj, Formatting.Indented));
+
+            return true;
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            return false;
+        }
     }
 }
 
