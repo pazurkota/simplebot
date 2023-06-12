@@ -41,6 +41,7 @@ public class Bot {
         slashCommandConfig.RegisterCommands<UtilityCommands>();
         slashCommandConfig.RegisterCommands<FunCommands>();
         slashCommandConfig.RegisterCommands<ModerationCommands>();
+        slashCommandConfig.RegisterCommands<LevelCommands>();
         
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online
