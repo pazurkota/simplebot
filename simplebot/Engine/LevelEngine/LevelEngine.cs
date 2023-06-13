@@ -95,6 +95,30 @@ public class LevelEngine {
             return false;
         }
     }
+
+    public bool GiveXp(string username, ulong guildId, double xp) {
+        try {
+            string json = File.ReadAllText(Path);
+            var jsonObj = JObject.Parse(json);
+            
+            var members = jsonObj["members"].ToObject<List<DUser>>();
+            
+            foreach (DUser member in members) {
+                if (member.Username == username && member.GuildId == guildId.ToString()) {
+                    member.Xp += xp;
+                }
+            }
+            
+            jsonObj["members"] = JArray.FromObject(members);
+            File.WriteAllText(Path, JsonConvert.SerializeObject(jsonObj, Formatting.Indented));
+
+            return true;
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
 }
 
 internal sealed class LevelJsonFile {

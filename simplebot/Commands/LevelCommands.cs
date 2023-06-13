@@ -1,4 +1,5 @@
-﻿using DSharpPlus.SlashCommands;
+﻿using DSharpPlus;
+using DSharpPlus.SlashCommands;
 using DSharpPlus.Entities;
 using simplebot.Engine.LevelEngine;
 
@@ -62,6 +63,53 @@ public class LevelCommands : ApplicationCommandModule {
                 };
             }
 
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+        }
+    }
+
+    [SlashCommand("addxp", "Adds XP to a user")]
+    public async Task AddXpAsync(InteractionContext ctx, 
+        [Option("user", "Get specified user")] DiscordUser user, 
+        [Option("xp", "Get XP to give")] double xpToGive) {
+        
+        await ctx.DeferAsync();
+        DiscordEmbed embed;
+
+        if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild)) {
+            embed = new DiscordEmbedBuilder {
+                Title = "Error",
+                Description = "You don't have permission to use this command!",
+                Color = DiscordColor.Red,
+                Timestamp = DateTime.Now
+            };
+            
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+            return;
+        }
+        
+        LevelEngine engine = new LevelEngine();
+        bool userExist = engine.CheckUserExist(user.Username, ctx.Guild.Id);
+
+        if (userExist && xpToGive > 0) {
+            engine.GiveXp(user.Username, ctx.Guild.Id, xpToGive); // give xp to user
+            
+            embed = new DiscordEmbedBuilder {
+                Title = "Success",
+                Description = $"Successfully gave `{xpToGive}` XP to `{user.Username}`",
+                Color = DiscordColor.Green,
+                Timestamp = DateTime.Now
+            };
+
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+        }
+        else {
+            embed = new DiscordEmbedBuilder {
+                Title = "Error",
+                Description = "User does not exist or XP is less than 0",
+                Color = DiscordColor.Red,
+                Timestamp = DateTime.Now
+            }; 
+                
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
         }
     }
