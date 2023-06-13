@@ -67,7 +67,7 @@ public class LevelCommands : ApplicationCommandModule {
         }
     }
 
-    [SlashCommand("addxp", "Adds XP to a user")]
+    [SlashCommand("userxp", "Modifies user's XP")]
     public async Task AddXpAsync(InteractionContext ctx, 
         [Option("user", "Get specified user")] DiscordUser user, 
         [Option("xp", "Get XP to give")] double xpToGive) {
@@ -90,12 +90,13 @@ public class LevelCommands : ApplicationCommandModule {
         LevelEngine engine = new LevelEngine();
         bool userExist = engine.CheckUserExist(user.Username, ctx.Guild.Id);
 
-        if (userExist && xpToGive > 0) {
+        if (userExist) {
             engine.GiveXp(user.Username, ctx.Guild.Id, xpToGive); // give xp to user
+            string desc = $"Successfully {(xpToGive > 0 ? "gave" : "removed")} {xpToGive} XP to `{user.Username}`";
             
             embed = new DiscordEmbedBuilder {
                 Title = "Success",
-                Description = $"Successfully gave `{xpToGive}` XP to `{user.Username}`",
+                Description = desc,
                 Color = DiscordColor.Green,
                 Timestamp = DateTime.Now
             };
@@ -105,7 +106,7 @@ public class LevelCommands : ApplicationCommandModule {
         else {
             embed = new DiscordEmbedBuilder {
                 Title = "Error",
-                Description = "User does not exist or XP is less than 0",
+                Description = "User does not exist",
                 Color = DiscordColor.Red,
                 Timestamp = DateTime.Now
             }; 
