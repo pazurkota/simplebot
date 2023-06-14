@@ -10,11 +10,6 @@ public class LevelEngine {
     
     public bool StoreUserDetails(DUser user) {
         try {
-            if (!File.Exists(Path)) {
-                File.Create(Path).Dispose();
-                File.WriteAllText(Path, "{\n\"members\": []\n}");
-            }
-
             string json = File.ReadAllText(Path);
             JObject jsonObj = JObject.Parse(json);
 
@@ -33,6 +28,11 @@ public class LevelEngine {
     }
 
     public bool CheckUserExist(string username, ulong guildId) {
+        if (!File.Exists(Path)) {
+            File.Create(Path).Dispose();
+            File.WriteAllText(Path, "{\n\"members\": []\n}");
+        }
+        
         using StreamReader sr = new StreamReader(Path);
         
         string json = sr.ReadToEnd();
