@@ -10,7 +10,6 @@ public class LevelCommands : ApplicationCommandModule {
     [SlashCommand("profile", "Shows your profile")]
     public async Task ProfileAsync(InteractionContext ctx) {
         string username = ctx.Member.Username;
-        string avatarUrl = ctx.Member.AvatarUrl;
 
         ulong guildId = ctx.Guild.Id;
         int XP = 0;

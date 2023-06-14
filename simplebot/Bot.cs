@@ -123,7 +123,9 @@ public class Bot {
                                      "`/help` - Returns this help menu\n" +
                                      "`/repo` - Return the link to the bot's GitHub repository\n" +
                                      "`/support` - Return the link to the bot's support server\n" +
-                                     "`/uptime` - Returns the bot's uptime\n")
+                                     "`/uptime` - Returns the bot's uptime\n" +
+                                     "`/profile` - Returns your profile\n" +
+                                     "`/userxp [user] [xpToGive]` - Gives a specified amount of xp to a specified user\n")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
                 
