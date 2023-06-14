@@ -106,6 +106,16 @@ public class LevelEngine {
             foreach (DUser member in members) {
                 if (member.Username == username && member.GuildId == guildId.ToString()) {
                     member.Xp += xp;
+                    
+                    if (member.Xp >= Config.LoadConfig().LevelCap) {
+                        LeveledUp = true;
+                        member.Level++;
+                        member.Xp = 0;
+                    }
+                    
+                    if (member.Xp < 0) {
+                        member.Xp = 0;
+                    }
                 }
             }
             
