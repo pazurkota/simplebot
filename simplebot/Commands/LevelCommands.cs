@@ -99,7 +99,7 @@ public class LevelCommands : ApplicationCommandModule {
             embed = new DiscordEmbedBuilder {
                 Title = "Success",
                 Description = $"Successfully {(xpToGive > 0 ? "gave" : "removed")} **{xpToGive} XP** to `{user.Username}" +
-                "`\nNew XP: `" + (member.Xp + xpToGive) + "`" + (engine.LeveledUp ? " (**Level up!**)" : ""),
+                $"`\nNew XP: `{(member.Xp + xpToGive > 0 ? $"{(member.Xp + xpToGive).ToString()}" : "0")}` {(engine.LeveledUp ? " (**Level up!**)" : "")}",
                 Color = DiscordColor.Green,
                 Timestamp = DateTime.Now
             };
