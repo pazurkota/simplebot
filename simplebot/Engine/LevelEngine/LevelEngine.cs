@@ -103,19 +103,17 @@ public class LevelEngine {
             
             var members = jsonObj["members"].ToObject<List<DUser>>();
             
-            foreach (DUser member in members) {
-                if (member.Username == username && member.GuildId == guildId.ToString()) {
-                    member.Xp += xp;
+            foreach (var member in members.Where(member => member.Username == username && member.GuildId == guildId.ToString())) {
+                member.Xp += xp;
                     
-                    if (member.Xp >= Config.LoadConfig().LevelCap) {
-                        LeveledUp = true;
-                        member.Level++;
-                        member.Xp = 0;
-                    }
+                if (member.Xp >= Config.LoadConfig().LevelCap) {
+                    LeveledUp = true;
+                    member.Level++;
+                    member.Xp = 0;
+                }
                     
-                    if (member.Xp < 0) {
-                        member.Xp = 0;
-                    }
+                if (member.Xp < 0) {
+                    member.Xp = 0;
                 }
             }
             

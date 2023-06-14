@@ -2,6 +2,7 @@
 using DSharpPlus.SlashCommands;
 using DSharpPlus.Entities;
 using simplebot.Engine.LevelEngine;
+using simplebot.Configuration;
 
 namespace simplebot.Commands;
 
@@ -89,14 +90,16 @@ public class LevelCommands : ApplicationCommandModule {
         
         LevelEngine engine = new LevelEngine();
         bool userExist = engine.CheckUserExist(user.Username, ctx.Guild.Id);
+        DUser member = engine.GetUser(user.Username, ctx.Guild.Id);
 
         if (userExist) {
+
             engine.GiveXp(user.Username, ctx.Guild.Id, xpToGive); // give xp to user
-            string desc = $"Successfully {(xpToGive > 0 ? "gave" : "removed")} {xpToGive} XP to `{user.Username}`";
-            
+
             embed = new DiscordEmbedBuilder {
                 Title = "Success",
-                Description = desc,
+                Description = $"Successfully {(xpToGive > 0 ? "gave" : "removed")} **{xpToGive} XP** to `{user.Username}" +
+                "`\nNew XP: `" + (member.Xp + xpToGive) + "`" + (engine.LeveledUp ? " (**Level up!**)" : ""),
                 Color = DiscordColor.Green,
                 Timestamp = DateTime.Now
             };
