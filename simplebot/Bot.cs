@@ -55,10 +55,10 @@ public class Bot {
     
     private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
         var levelEngine = new LevelEngine();
-        var addedXp = levelEngine.AddXp(e.Author.Username, e.Guild.Id);
+        var addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
 
         if (levelEngine.LeveledUp) {
-            int level = levelEngine.GetUser(e.Author.Username, e.Guild.Id).Level;
+            int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
 
             DiscordEmbed embed = new DiscordEmbedBuilder() {
                 Title = "Level up!",

@@ -27,7 +27,7 @@ public class LevelEngine {
         }
     }
 
-    public bool CheckUserExist(string username, ulong guildId) {
+    public bool CheckUserExist(ulong userId, ulong guildId) {
         if (!File.Exists(Path)) {
             File.Create(Path).Dispose();
             File.WriteAllText(Path, "{\n\"members\": []\n}");
@@ -39,21 +39,22 @@ public class LevelEngine {
         JObject jsonObj = JObject.Parse(json);
 
         var members = jsonObj["members"].ToObject<List<DUser>>();
-        var user = members.Find(x => x.Username == username && x.GuildId == guildId.ToString());
+        var user = members.Find(x => x.UserId == userId.ToString() && x.GuildId == guildId.ToString());
 
         return user != null;
     }
 
-    public DUser GetUser(string username, ulong guildId) { 
+    public DUser GetUser(ulong userId, ulong guildId) { 
         using StreamReader sr = new StreamReader(Path);
         
         string json = sr.ReadToEnd();
         LevelJsonFile jsonObj = JsonConvert.DeserializeObject<LevelJsonFile>(json);
 
         foreach (DUser member in jsonObj.Members) {
-            if (member.Username == username && member.GuildId == guildId.ToString()) {
+            if (member.Username == userId.ToString() && member.GuildId == guildId.ToString()) {
                 return new DUser() {
                     Username = member.Username,
+                    UserId = member.UserId,
                     GuildId = member.GuildId,
                     Xp = member.Xp,
                     Level = member.Level
@@ -64,7 +65,7 @@ public class LevelEngine {
         return null;
     }
 
-    public bool AddXp(string username, ulong guildId) {
+    public bool AddXp(ulong userId, ulong guildId) {
         try {
             double levelMultiplier = Config.LoadConfig().LevelMultiplier;
             int levelCap = Config.LoadConfig().LevelCap;
@@ -75,7 +76,7 @@ public class LevelEngine {
             var members = jsonObj["members"].ToObject<List<DUser>>();
             
             foreach (DUser member in members) {
-                if (member.Username == username && member.GuildId == guildId.ToString()) {
+                if (member.UserId == userId.ToString() && member.GuildId == guildId.ToString()) {
                     member.Xp += levelMultiplier;
                 } 
                 if (member.Xp >= levelCap ) {
@@ -96,14 +97,14 @@ public class LevelEngine {
         }
     }
 
-    public bool GiveXp(string username, ulong guildId, double xp) {
+    public bool GiveXp(ulong userId, ulong guildId, double xp) {
         try {
             string json = File.ReadAllText(Path);
             var jsonObj = JObject.Parse(json);
             
             var members = jsonObj["members"].ToObject<List<DUser>>();
             
-            foreach (var member in members.Where(member => member.Username == username && member.GuildId == guildId.ToString())) {
+            foreach (var member in members.Where(member => member.UserId == userId.ToString() && member.GuildId == guildId.ToString())) {
                 member.Xp += xp;
                     
                 if (member.Xp >= Config.LoadConfig().LevelCap) {
