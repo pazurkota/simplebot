@@ -116,4 +116,24 @@ public class LevelCommands : ApplicationCommandModule {
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
         }
     }
+
+    [SlashCommand("addreward", "Adds a role reward")]
+    public async Task AddRewardAsync(InteractionContext ctx, 
+        [Option("role", "Specify the reward role")] DiscordRole role, 
+        [Option("level", "Specify a level to give reward")] long level) {
+
+        await ctx.DeferAsync();
+
+        RoleRewards roleRewards = new RoleRewards();
+        roleRewards.AddReward((int)level, role.Id);
+        
+        DiscordEmbed embed = new DiscordEmbedBuilder {
+            Title = "Success",
+            Description = $"Successfully added role reward {role.Mention} for level `{level}`",
+            Color = DiscordColor.Green,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
 }
