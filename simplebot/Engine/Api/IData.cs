@@ -1,4 +1,4 @@
-﻿namespace simplebot.Api; 
+﻿namespace simplebot.Engine.Api; 
 
 public interface IDataFetcher {
     string FetchData();

@@ -1,7 +1,4 @@
-using Newtonsoft.Json;
-using RestSharp;
-
-namespace simplebot.Api {
+namespace simplebot.Engine.Api {
     public class MemeGeneratorApi : IContentFetcher {
         public string FetchData(string endpoint) {
             try {

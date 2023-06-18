@@ -1,6 +1,4 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -8,6 +6,8 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using simplebot.Commands;
+using simplebot.Configuration;
+using simplebot.Engine.LevelEngine;
 
 namespace simplebot; 
 
@@ -17,7 +17,7 @@ public class Bot {
     public InteractivityExtension Interactivity { get; private set; }
 
     public async Task RunAsync() {
-        var json = ConfigHandler.GetConfig();
+        var json = Config.LoadConfig();
 
         var config = new DiscordConfiguration {
             Intents = DiscordIntents.All,
@@ -35,6 +35,7 @@ public class Bot {
         
         Client.Ready += OnClientReady;
         Client.ComponentInteractionCreated += ButtonPressed;
+        Client.MessageCreated += MessageSendHandler;
 
         var slashCommandConfig = Client.UseSlashCommands();
         
@@ -42,12 +43,46 @@ public class Bot {
         slashCommandConfig.RegisterCommands<UtilityCommands>();
         slashCommandConfig.RegisterCommands<FunCommands>();
         slashCommandConfig.RegisterCommands<ModerationCommands>();
+        slashCommandConfig.RegisterCommands<LevelCommands>();
         
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
         await Task.Delay(-1); // make the bot stay online
     }
 
     private Task OnClientReady(DiscordClient sender, ReadyEventArgs args) {
+        return Task.CompletedTask;
+    }
+    
+    private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
+        LevelEngine levelEngine = new LevelEngine();
+        RoleRewards reward = new RoleRewards();
+        DiscordMember member = (DiscordMember) e.Author;
+        
+        bool addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
+        int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
+        bool canGiveReward = reward.CanGiveReward(level, e.Guild.Id);
+
+        if (!levelEngine.LeveledUp) return Task.CompletedTask;
+
+        if (canGiveReward) {
+            var role = e.Guild.GetRole(reward.GetReward(level, e.Guild.Id));
+            member.GrantRoleAsync(role);
+        }
+        
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Level up!",
+            Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
+                          $"Your new current level: `{level}`" +
+                          $"{(canGiveReward ? $"\nYou have been rewarded with a role!" : "")}",
+            Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
+                Url = e.Author.AvatarUrl
+            },
+            Color = DiscordColor.Green,
+            Timestamp = DateTime.Now
+        };
+            
+        e.Channel.SendMessageAsync(e.Author.Mention, embed);
+
         return Task.CompletedTask;
     }
 
@@ -97,7 +132,9 @@ public class Bot {
                                      "`/help` - Returns this help menu\n" +
                                      "`/repo` - Return the link to the bot's GitHub repository\n" +
                                      "`/support` - Return the link to the bot's support server\n" +
-                                     "`/uptime` - Returns the bot's uptime\n")
+                                     "`/uptime` - Returns the bot's uptime\n" +
+                                     "`/profile` - Returns your profile\n" +
+                                     "`/userxp [user] [xpToGive]` - Gives a specified amount of xp to a specified user\n")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
                 

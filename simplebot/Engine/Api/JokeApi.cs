@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using simplebot.Classes;
+using simplebot.Configuration;
 
-namespace simplebot.Api; 
+namespace simplebot.Engine.Api; 
 
 public class JokeApiFetcher : IDataFetcher {
     public string FetchData() {
-        string apiKey = ConfigHandler.GetConfig().ApiNinjasApiKey;
+        string apiKey = Config.LoadConfig().ApiNinjasApiKey;
         
         RestClientOptions options = new RestClientOptions("https://api.api-ninjas.com/v1/") {
             ThrowOnAnyError = true
@@ -49,9 +49,9 @@ public class JokeApiProcessor {
         _parser = parser;
     }
     
-    public List<JokeClass> ProcessData() {
+    public List<simplebot.Engine.Classes.JokeClass> ProcessData() {
         var data = _fetcher.FetchData();
-        var parsedData = _parser.ParseData<JokeClass>(data);
+        var parsedData = _parser.ParseData<simplebot.Engine.Classes.JokeClass>(data);
 
         return parsedData;
     }

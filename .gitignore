@@ -1,3 +1,4 @@
+# .NET Specified
 bin/
 obj/
 
@@ -8,6 +9,12 @@ riderModule.iml
 .idea/
 simplebot/config.json
 
-# VSCode specified
+# VSCode Specified
 /.vscode/
 simplebot/.vscode/
+
+# Project related files
+simplebot/Config/config.json 
+simplebot/Engine/LevelEngine/userinfo.json 
+
+simplebot/Engine/LevelEngine/rewards.json

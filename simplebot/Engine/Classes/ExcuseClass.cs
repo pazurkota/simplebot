@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace simplebot.Classes; 
+namespace simplebot.Engine.Classes; 
 
 public class ExcuseClass {
     [JsonProperty("excuse")] public string Excuse { get; set; } = null!;
