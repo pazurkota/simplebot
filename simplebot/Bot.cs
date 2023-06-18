@@ -55,25 +55,28 @@ public class Bot {
     
     private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
         var levelEngine = new LevelEngine();
+        var reward = new RoleRewards();
         var addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
 
-        if (levelEngine.LeveledUp) {
-            int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
+        if (!levelEngine.LeveledUp) return Task.CompletedTask;
 
-            DiscordEmbed embed = new DiscordEmbedBuilder() {
-                Title = "Level up!",
-                Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
-                              $"Your new current level: `{level}`",
-                Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
-                    Url = e.Author.AvatarUrl
-                },
-                Color = DiscordColor.Green,
-                Timestamp = DateTime.Now
-            };
-            
-            e.Channel.SendMessageAsync(e.Author.Mention, embed);
-        }
+        int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
+
+        if (reward.CanGiveReward(level)) Console.WriteLine($"User {e.Author.Username} has been given a role!");
         
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Level up!",
+            Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
+                          $"Your new current level: `{level}`",
+            Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
+                Url = e.Author.AvatarUrl
+            },
+            Color = DiscordColor.Green,
+            Timestamp = DateTime.Now
+        };
+            
+        e.Channel.SendMessageAsync(e.Author.Mention, embed);
+
         return Task.CompletedTask;
     }
 

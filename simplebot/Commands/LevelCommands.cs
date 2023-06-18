@@ -34,7 +34,10 @@ public class LevelCommands : ApplicationCommandModule {
 
             DiscordEmbed embed = new DiscordEmbedBuilder() {
                 Title = "Profile",
-                Description = $"**userId:** `{storedUser.UserId}`\n**Level:** `{storedUser.Level}`\n**XP:** `{storedUser.Xp}`",
+                Description = $"**Username:** `{storedUser.Username}`\n" +
+                              $"**User ID:** `{storedUser.UserId}`\n" +
+                              $"**Level:** `{storedUser.Level}`\n" +
+                              $"**XP:** `{storedUser.Xp}`",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
                     Url = ctx.Member.AvatarUrl
                 },

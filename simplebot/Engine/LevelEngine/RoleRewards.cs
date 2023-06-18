@@ -24,4 +24,20 @@ public class RoleRewards {
             throw;
         }
     }
+
+    public bool CanGiveReward(int level) {
+        try {
+            string json = File.ReadAllText(Path);
+            JObject jsonObj = JObject.Parse(json);
+
+            var rewards = jsonObj["rewards"].ToObject<List<Rewards>>();
+            var user = rewards.Find(x => x.Level == level);
+
+            return user != null;
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
 }

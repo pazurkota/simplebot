@@ -51,7 +51,7 @@ public class LevelEngine {
         LevelJsonFile jsonObj = JsonConvert.DeserializeObject<LevelJsonFile>(json);
 
         foreach (DUser member in jsonObj.Members) {
-            if (member.Username == userId.ToString() && member.GuildId == guildId.ToString()) {
+            if (member.UserId == userId.ToString() && member.GuildId == guildId.ToString()) {
                 return new DUser() {
                     Username = member.Username,
                     UserId = member.UserId,
