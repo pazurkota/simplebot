@@ -34,7 +34,7 @@ To getting started, go to your Discord Server and type `/help`
 ## Acknowledgements
 
 #### Frameworks:
-- [DSharpPlus](tps://dsharpplus.github.io/DSharpPlus/)
+- [DSharpPlus](https://dsharpplus.github.io/DSharpPlus/)
 - [RestSharp](https://restsharp.dev)
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
 
