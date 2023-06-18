@@ -56,13 +56,18 @@ public class Bot {
     private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
         var levelEngine = new LevelEngine();
         var reward = new RoleRewards();
+        var member = (DiscordMember) e.Author;
+        
         var addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
 
         if (!levelEngine.LeveledUp) return Task.CompletedTask;
 
         int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
 
-        if (reward.CanGiveReward(level)) Console.WriteLine($"User {e.Author.Username} has been given a role!");
+        if (reward.CanGiveReward(level)) {
+            var role = e.Guild.GetRole(reward.GetReward(level));
+            member.GrantRoleAsync(role);
+        }
         
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = "Level up!",
