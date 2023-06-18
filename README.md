@@ -38,9 +38,9 @@ To change the XP multiplier (amount of XP user will have after each message) can
 
 Contributions are always welcome!
 
-See `contributing.md` for ways to get started.
+See `CONTRIBUTING.md` for ways to get started.
 
-Please adhere to this project's `code of conduct`.
+Please adhere to this project's `CODE_OF_CONDUCT.md`.
 
 
 ## Acknowledgements
