@@ -9,6 +9,7 @@ namespace simplebot.Commands;
 public class LevelCommands : ApplicationCommandModule {
     [SlashCommand("profile", "Shows your profile")]
     public async Task ProfileAsync(InteractionContext ctx) {
+        ulong userId = ctx.Member.Id;
         string username = ctx.Member.Username;
 
         ulong guildId = ctx.Guild.Id;
@@ -17,6 +18,7 @@ public class LevelCommands : ApplicationCommandModule {
 
         DUser user = new DUser() {
             Username = username,
+            UserId = userId.ToString(),
             GuildId = guildId.ToString(),
             Xp = XP,
             Level = level
@@ -25,14 +27,17 @@ public class LevelCommands : ApplicationCommandModule {
         await ctx.DeferAsync();
 
         LevelEngine engine = new LevelEngine();
-        bool userExist = engine.CheckUserExist(username, guildId);
+        bool userExist = engine.CheckUserExist(userId, guildId);
 
         if (userExist) {
-            DUser storedUser = engine.GetUser(username, guildId);
+            DUser storedUser = engine.GetUser(userId, guildId);
 
             DiscordEmbed embed = new DiscordEmbedBuilder() {
                 Title = "Profile",
-                Description = $"**Username:** `{storedUser.Username}`\n**Level:** `{storedUser.Level}`\n**XP:** `{storedUser.Xp}`",
+                Description = $"**Username:** `{storedUser.Username}`\n" +
+                              $"**User ID:** `{storedUser.UserId}`\n" +
+                              $"**Level:** `{storedUser.Level}`\n" +
+                              $"**XP:** `{storedUser.Xp}`",
                 Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
                     Url = ctx.Member.AvatarUrl
                 },
@@ -88,16 +93,16 @@ public class LevelCommands : ApplicationCommandModule {
         }
         
         LevelEngine engine = new LevelEngine();
-        bool userExist = engine.CheckUserExist(user.Username, ctx.Guild.Id);
-        DUser member = engine.GetUser(user.Username, ctx.Guild.Id);
+        bool userExist = engine.CheckUserExist(user.Id, ctx.Guild.Id);
+        DUser member = engine.GetUser(user.Id, ctx.Guild.Id);
 
         if (userExist) {
 
-            engine.GiveXp(user.Username, ctx.Guild.Id, xpToGive); // give xp to user
+            engine.GiveXp(user.Id, ctx.Guild.Id, xpToGive); // give xp to user
 
             embed = new DiscordEmbedBuilder {
                 Title = "Success",
-                Description = $"Successfully {(xpToGive > 0 ? "gave" : "removed")} **{xpToGive} XP** to `{user.Username}" +
+                Description = $"Successfully {(xpToGive > 0 ? "gave" : "removed")} **{xpToGive} XP** to `{user.Id}" +
                 $"`\nNew XP: `{(member.Xp + xpToGive > 0 ? $"{(member.Xp + xpToGive).ToString()}" : "0")}` {(engine.LeveledUp ? " (**Level up!**)" : "")}",
                 Color = DiscordColor.Green,
                 Timestamp = DateTime.Now
@@ -115,5 +120,25 @@ public class LevelCommands : ApplicationCommandModule {
                 
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
         }
+    }
+
+    [SlashCommand("addreward", "Adds a role reward")]
+    public async Task AddRewardAsync(InteractionContext ctx, 
+        [Option("role", "Specify the reward role")] DiscordRole role, 
+        [Option("level", "Specify a level to give reward")] long level) {
+
+        await ctx.DeferAsync();
+
+        RoleRewards roleRewards = new RoleRewards();
+        roleRewards.AddReward((int)level, role.Id, ctx.Guild.Id);
+        
+        DiscordEmbed embed = new DiscordEmbedBuilder {
+            Title = "Success",
+            Description = $"Successfully added role reward {role.Mention} for level `{level}`",
+            Color = DiscordColor.Green,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 }

@@ -54,26 +54,35 @@ public class Bot {
     }
     
     private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
-        var levelEngine = new LevelEngine();
-        var addedXp = levelEngine.AddXp(e.Author.Username, e.Guild.Id);
+        LevelEngine levelEngine = new LevelEngine();
+        RoleRewards reward = new RoleRewards();
+        DiscordMember member = (DiscordMember) e.Author;
+        
+        bool addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
+        int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
+        bool canGiveReward = reward.CanGiveReward(level, e.Guild.Id);
 
-        if (levelEngine.LeveledUp) {
-            int level = levelEngine.GetUser(e.Author.Username, e.Guild.Id).Level;
+        if (!levelEngine.LeveledUp) return Task.CompletedTask;
 
-            DiscordEmbed embed = new DiscordEmbedBuilder() {
-                Title = "Level up!",
-                Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
-                              $"Your new current level: `{level}`",
-                Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
-                    Url = e.Author.AvatarUrl
-                },
-                Color = DiscordColor.Green,
-                Timestamp = DateTime.Now
-            };
-            
-            e.Channel.SendMessageAsync(e.Author.Mention, embed);
+        if (canGiveReward) {
+            var role = e.Guild.GetRole(reward.GetReward(level, e.Guild.Id));
+            member.GrantRoleAsync(role);
         }
         
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Level up!",
+            Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
+                          $"Your new current level: `{level}`" +
+                          $"{(canGiveReward ? $"\nYou have been rewarded with a role!" : "")}",
+            Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
+                Url = e.Author.AvatarUrl
+            },
+            Color = DiscordColor.Green,
+            Timestamp = DateTime.Now
+        };
+            
+        e.Channel.SendMessageAsync(e.Author.Mention, embed);
+
         return Task.CompletedTask;
     }
 
