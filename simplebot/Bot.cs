@@ -54,17 +54,17 @@ public class Bot {
     }
     
     private Task MessageSendHandler(DiscordClient client, MessageCreateEventArgs e) {
-        var levelEngine = new LevelEngine();
-        var reward = new RoleRewards();
-        var member = (DiscordMember) e.Author;
+        LevelEngine levelEngine = new LevelEngine();
+        RoleRewards reward = new RoleRewards();
+        DiscordMember member = (DiscordMember) e.Author;
         
-        var addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
+        bool addedXp = levelEngine.AddXp(e.Author.Id, e.Guild.Id);
+        int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
+        bool canGiveReward = reward.CanGiveReward(level, e.Guild.Id);
 
         if (!levelEngine.LeveledUp) return Task.CompletedTask;
 
-        int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
-
-        if (reward.CanGiveReward(level, e.Guild.Id)) {
+        if (canGiveReward) {
             var role = e.Guild.GetRole(reward.GetReward(level, e.Guild.Id));
             member.GrantRoleAsync(role);
         }
@@ -72,7 +72,8 @@ public class Bot {
         DiscordEmbed embed = new DiscordEmbedBuilder() {
             Title = "Level up!",
             Description = $":tada: Congratulations, **{e.Author.Username}!** You leveled up!\n" +
-                          $"Your new current level: `{level}`",
+                          $"Your new current level: `{level}`" +
+                          $"{(canGiveReward ? $"\nYou have been rewarded with a role!" : "")}",
             Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail() {
                 Url = e.Author.AvatarUrl
             },
