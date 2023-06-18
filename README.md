@@ -1,4 +1,3 @@
-
 # 🤖 simplebot
 
 A Simple Discord bot to entertain your server
@@ -30,6 +29,19 @@ This bot uses only [Slash Commands](https://support.discord.com/hc/en-us/article
 
 To getting started, go to your Discord Server and type `/help`
 
+![IMG2](https://cdn.discordapp.com/attachments/973146682499956746/1119977268777857024/IMG2.png)
+
+![IMG3](https://cdn.discordapp.com/attachments/973146682499956746/1119977269335691354/IMG3.png)
+
+To change the XP multiplier (amount of XP user will have after each message) can be change in `"xp_multiplier"` field in config file, and the requierd XP to new level can be modified in `"level_cap"` field
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
 
 ## Acknowledgements
 
@@ -43,4 +55,9 @@ To getting started, go to your Discord Server and type `/help`
 - [Excuse API](https://excuser-three.vercel.app)
 - [Meme API](https://github.com/D3vd/Meme_Api)
 - [Memegen API](https://api.memegen.link/docs)
+
+
+## License
+
+This project is under [MIT](https://github.com/pazurkota/simplebot/blob/master/LICENSE) license
 
