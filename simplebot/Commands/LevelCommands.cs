@@ -130,7 +130,7 @@ public class LevelCommands : ApplicationCommandModule {
         await ctx.DeferAsync();
 
         RoleRewards roleRewards = new RoleRewards();
-        roleRewards.AddReward((int)level, role.Id);
+        roleRewards.AddReward((int)level, role.Id, ctx.Guild.Id);
         
         DiscordEmbed embed = new DiscordEmbedBuilder {
             Title = "Success",

@@ -64,8 +64,8 @@ public class Bot {
 
         int level = levelEngine.GetUser(e.Author.Id, e.Guild.Id).Level;
 
-        if (reward.CanGiveReward(level)) {
-            var role = e.Guild.GetRole(reward.GetReward(level));
+        if (reward.CanGiveReward(level, e.Guild.Id)) {
+            var role = e.Guild.GetRole(reward.GetReward(level, e.Guild.Id));
             member.GrantRoleAsync(role);
         }
         

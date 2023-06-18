@@ -5,7 +5,7 @@ namespace simplebot.Engine.LevelEngine;
 public class RoleRewards {
     private const string Path = "Engine/LevelEngine/rewards.json";
     
-    public void AddReward(int level, ulong roleId) {
+    public void AddReward(int level, ulong roleId, ulong guildId) {
         try {
             string json = File.ReadAllText(Path);
             JObject jsonObj = JObject.Parse(json);
@@ -13,7 +13,8 @@ public class RoleRewards {
             var rewards = jsonObj["rewards"].ToObject<List<Rewards>>();
             rewards.Add(new Rewards() {
                 Level = level,
-                RewardRoleId = roleId
+                RewardRoleId = roleId,
+                GuildId = guildId
             });
 
             jsonObj["rewards"] = JArray.FromObject(rewards);
@@ -25,13 +26,13 @@ public class RoleRewards {
         }
     }
 
-    public bool CanGiveReward(int level) {
+    public bool CanGiveReward(int level, ulong guildId) {
         try {
             string json = File.ReadAllText(Path);
             JObject jsonObj = JObject.Parse(json);
 
             var rewards = jsonObj["rewards"].ToObject<List<Rewards>>();
-            var user = rewards.Find(x => x.Level == level);
+            var user = rewards.Find(x => x.Level == level && x.GuildId == guildId);
 
             return user != null;
         }
@@ -41,13 +42,13 @@ public class RoleRewards {
         }
     }
     
-    public ulong GetReward(int level) {
+    public ulong GetReward(int level, ulong guildId) {
         try {
             string json = File.ReadAllText(Path);
             JObject jsonObj = JObject.Parse(json);
 
             var rewards = jsonObj["rewards"].ToObject<List<Rewards>>();
-            var user = rewards.Find(x => x.Level == level);
+            var user = rewards.Find(x => x.Level == level && x.GuildId == guildId);
 
             return user.RewardRoleId;
         }
