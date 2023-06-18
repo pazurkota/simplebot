@@ -1,44 +1,46 @@
+
 # 🤖 simplebot
 
-Simple Discord bot to entertain your server
+A Simple Discord bot to entertain your server
 
-## Installation
-### Requirements:
-- [.NET 7.0 or newer](https://dotnet.microsoft.com/en-us/download)
-- [API Ninjas API Key](https://api-ninjas.com/api)
+![IMG1](https://cdn.discordapp.com/attachments/973146682499956746/1119970853896069211/readme_img.png)
+## Prerequisites
+- [.NET 7.0 Or newer](https://dotnet.microsoft.com/en-us/download)
+- [API Ninjas Key](https://api-ninjas.com/api)
 - [Discord Application (bot)](https://discord.com/developers/applications)
 
-### Bot setup:
-- Create your aplication at Discord Developer Portal
-- In your app, go to `Bot/Privileged Gateway` Intents and enable all settings
-- Next, go to `OAuth2/URL Generator` and generate bot invite link
-- Go to `OAuth2/URL Generator` and generate bot invite link
-    - If you have 2FA Authentication, you will be asked to prompt a 6 digit code
-- Create a JSON File in root directory:
+## Installation
+
+1. Create your [Discord Application](https://discord.com/developers/docs/getting-started#step-1-creating-an-app)
+2. Clone the repository and  open it in your IDE
+3. Install dependencies
+4. Create `config.json` file in `Config` directory with the following content:
 ```json
 {
-  "token": "Discord bot token here",
-  "api-ninjas_apikey": "API Ninjas API Key here"
+  "token": "YOUR DISCORD BOT TOKEN",
+  "api-ninjas_apikey": "YOUR API NINJAS KEY",
+  "xp_multiplier": 0.5,
+  "level_cap": 20
 }
 ```
-- Voulà! Now just run solution and everyting should be working!
-
-
+5. Run the project.
 ## Usage
-This bot uses only slash commands, so to run a command, type: `/command`
 
-Full command list is at `/help`
+This bot uses only [Slash Commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ)
+
+To getting started, go to your Discord Server and type `/help`
 
 
 ## Acknowledgements
-### Frameworks:
 
+#### Frameworks:
+- [DSharpPlus](tps://dsharpplus.github.io/DSharpPlus/)
 - [RestSharp](https://restsharp.dev)
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
-- [DSharpPlus](https://dsharpplus.github.io/DSharpPlus/)
 
-### API's:
-- [Excuser API](https://excuser-three.vercel.app)
-- [Memegen API](https://api.memegen.link/docs)
-- [Meme API](https://github.com/D3vd/Meme_Api)
+#### APIs:
 - [API Ninjas](https://api-ninjas.com/api)
+- [Excuse API](https://excuser-three.vercel.app)
+- [Meme API](https://github.com/D3vd/Meme_Api)
+- [Memegen API](https://api.memegen.link/docs)
+
