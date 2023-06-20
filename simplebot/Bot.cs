@@ -134,7 +134,8 @@ public class Bot {
                                      "`/support` - Return the link to the bot's support server\n" +
                                      "`/uptime` - Returns the bot's uptime\n" +
                                      "`/profile` - Returns your profile\n" +
-                                     "`/userxp [user] [xpToGive]` - Gives a specified amount of xp to a specified user\n")
+                                     "`/userxp [user] [xpToGive]` - Gives a specified amount of xp to a specified user\n +" +
+                                     "`/addreward [level] [roleId]` - Set the role award for specified level")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
                 
