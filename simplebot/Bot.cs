@@ -99,8 +99,6 @@ public class Bot {
             Color = DiscordColor.Green,
             Timestamp = DateTime.Now
         };
-            
-        e.Channel.SendMessageAsync(e.Author.Mention, embed);
 
         return Task.CompletedTask;
     }
