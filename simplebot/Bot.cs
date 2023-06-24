@@ -5,6 +5,8 @@ using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
+using DSharpPlus.Net;
+using DSharpPlus.Lavalink;
 using simplebot.Commands;
 using simplebot.Configuration;
 using simplebot.Engine.LevelEngine;
@@ -46,7 +48,23 @@ public class Bot {
         slashCommandConfig.RegisterCommands<LevelCommands>();
         slashCommandConfig.RegisterCommands<MusicCommands>();
         
+        // lavalink config
+        var endpoint = new ConnectionEndpoint() {
+            Hostname = "lavalink.devamop.in",
+            Port = 443,
+            Secured = true,
+        };
+
+        var lavalinkConfig = new LavalinkConfiguration() {
+            Password = "DevamOP",
+            RestEndpoint = endpoint,
+            SocketEndpoint = endpoint
+        };
+
+        var lavalink = Client.UseLavalink();
+        
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
+        await lavalink.ConnectAsync(lavalinkConfig);
         await Task.Delay(-1); // make the bot stay online
     }
 
