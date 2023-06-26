@@ -107,7 +107,7 @@ public class Bot {
         DiscordEmbed embed;
         
         switch (e.Interaction.Data.CustomId) {
-            case "fun":
+            case "fun": // Fun commands help menu
                 embed = new DiscordEmbedBuilder()
                     .WithTitle("Fun commands help menu")
                     .WithDescription("`/8ball [input]` - Get a random answer to your question\n" +
@@ -123,7 +123,7 @@ public class Bot {
                 e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
                     new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
-            case "moderation":
+            case "moderation": // Moderation commands help menu
                 embed = new DiscordEmbedBuilder()
                     .WithTitle("Moderation commands help menu")
                     .WithDescription("`/purge [amount]` - Deletes a specified amount of messages\n" +
@@ -140,7 +140,7 @@ public class Bot {
                     e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
                         new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
-            case "utility":
+            case "utility": // Utility commands help menu
                 embed = new DiscordEmbedBuilder()
                     .WithTitle("Utility commands help menu")
                     .WithDescription("`/ping` - Returns a client's ping\n" +
@@ -155,7 +155,21 @@ public class Bot {
                                      "`/addreward [level] [roleId]` - Set the role award for specified level")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
-                
+                e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
+                    new DiscordInteractionResponseBuilder().AddEmbed(embed));
+                return Task.CompletedTask;
+            case "music": // Music commands help menu
+                embed = new DiscordEmbedBuilder()
+                    .WithTitle("Music commands help menu")
+                    .WithDescription("`/play [song]` - Plays a specified song\n" +
+                                     "`/skip` - Skips the current song\n" +
+                                     "`/stop` - Stops the current song\n" +
+                                     "`/queue` - Returns the current queue\n" +
+                                     "`/pause` - Pauses the current song\n" +
+                                     "`/resume` - Resumes the current song\n" +
+                                     "`/nowplaying` - Returns the current song")
+                    .WithColor(DiscordColor.Azure)
+                    .WithTimestamp(DateTime.Now);
                 e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
                     new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
