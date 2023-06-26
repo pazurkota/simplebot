@@ -94,6 +94,61 @@ public class MusicCommands : ApplicationCommandModule{
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
+    [SlashCommand("skip", "Skips the current song")]
+    public async Task SkipMusicAsnyc(InteractionContext ctx) {
+        await ctx.DeferAsync();
+        
+        var lavalinkInstance = ctx.Client.GetLavalink();
+        var user = ctx.Member.VoiceState.Channel;
+
+        if (ctx.Member.VoiceState == null || user == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("You must be in a voice channel!"));
+            return;
+        }
+
+        if (user.Type != ChannelType.Voice) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("You must be in a voice channel!"));
+            return;
+        }
+        
+        var node = lavalinkInstance.ConnectedNodes.Values.First();
+        var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+        
+        if (connection == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Failed to connect to voice channel!"));
+            return;
+        }
+
+        if (connection.CurrentState.CurrentTrack == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("There is no song playing!"));
+            return;
+        }
+
+        await connection.GetTracksAsync(connection.CurrentState.CurrentTrack.Title);
+
+        if (Queue.Count == 0) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("There are no songs in the queue!"));
+            return;
+        }
+        
+        var musicTrack = Queue.First();
+        Queue.Remove(musicTrack);
+        
+        await connection.PlayAsync(musicTrack);
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Song skipped, now playing:",
+            Description = $"{musicTrack.Title} by {musicTrack.Author}\n" +
+                          $"Duration: {musicTrack.Length}\n" +
+                          $"Requested by: {ctx.Member.Username}\n" +
+                          $"Url: [Click here!]({musicTrack.Uri})",
+            Color = DiscordColor.Purple,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+
     [SlashCommand("pause", "Pause the current song")]
     public async Task PauseMusicAsync(InteractionContext ctx) {
         await ctx.DeferAsync();
