@@ -102,7 +102,7 @@ public class MusicCommands : ApplicationCommandModule{
         var embed = new DiscordEmbedBuilder() {
             Title = "Stopped playing:",
             Description = $"{connection.CurrentState.CurrentTrack.Title} by {connection.CurrentState.CurrentTrack.Author}\n",
-            Color = DiscordColor.Red,
+            Color = DiscordColor.Yellow,
             Timestamp = DateTime.Now
         };
             
@@ -151,6 +151,55 @@ public class MusicCommands : ApplicationCommandModule{
             Title = "Resumed playing:",
             Description = $"{connection.CurrentState.CurrentTrack.Title} by {connection.CurrentState.CurrentTrack.Author}\n",
             Color = DiscordColor.Green,
+            Timestamp = DateTime.Now
+        };
+            
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+    
+    [SlashCommand("stop", "Stops the music and disconnecting from the voice channel")]
+    public async Task StopMusicAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+        
+        var lavalinkInstance = ctx.Client.GetLavalink();
+        var user = ctx.Member.VoiceState.Channel;
+        
+        if (ctx.Member.VoiceState == null || user == null)
+        {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("You must be in a voice channel!"));
+            return;
+        }
+        
+        if (!lavalinkInstance.ConnectedNodes.Any()) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Lavalink node is not connected!"));
+            return;
+        }
+
+        if (user.Type != ChannelType.Voice) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("You must be in a voice channel!"));
+            return;
+        }
+        
+        var node = lavalinkInstance.ConnectedNodes.Values.First();
+        var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+        
+        if (connection == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Failed to connect to voice channel!"));
+            return;
+        }
+
+        if (connection.CurrentState.CurrentTrack == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("There is no song playing!"));
+            return;
+        }
+        
+        await connection.StopAsync();
+        await connection.DisconnectAsync();
+
+        var embed = new DiscordEmbedBuilder() {
+            Title = "Stopped playing:",
+            Description = $"{connection.CurrentState.CurrentTrack.Title} by {connection.CurrentState.CurrentTrack.Author}\n",
+            Color = DiscordColor.Red,
             Timestamp = DateTime.Now
         };
             
