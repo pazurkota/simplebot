@@ -293,4 +293,22 @@ public class MusicCommands : ApplicationCommandModule{
             
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
+
+    [SlashCommand("nowplaying", "Shows the current song")]
+    public async Task NowPlayingAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+
+        var lavalink = ctx.Client.GetLavalink();
+        var music = lavalink.ConnectedNodes.Values.First();
+        var connection = music.GetGuildConnection(ctx.Member.VoiceState.Guild);
+        
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Now playing:",
+            Description = $"{connection.CurrentState.CurrentTrack.Title} by {connection.CurrentState.CurrentTrack.Author}\n",
+            Color = DiscordColor.Blurple,
+            Timestamp = DateTime.Now
+        };
+
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
 }
