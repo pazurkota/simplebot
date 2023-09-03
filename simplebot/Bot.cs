@@ -5,6 +5,8 @@ using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
+using DSharpPlus.Net;
+using DSharpPlus.Lavalink;
 using simplebot.Commands;
 using simplebot.Configuration;
 using simplebot.Engine.LevelEngine;
@@ -44,8 +46,25 @@ public class Bot {
         slashCommandConfig.RegisterCommands<FunCommands>();
         slashCommandConfig.RegisterCommands<ModerationCommands>();
         slashCommandConfig.RegisterCommands<LevelCommands>();
+        slashCommandConfig.RegisterCommands<MusicCommands>();
+        
+        // lavalink config
+        var endpoint = new ConnectionEndpoint() {
+            Hostname = "lavalink.devamop.in",
+            Port = 443,
+            Secured = true,
+        };
+
+        var lavalinkConfig = new LavalinkConfiguration() {
+            Password = "DevamOP",
+            RestEndpoint = endpoint,
+            SocketEndpoint = endpoint
+        };
+
+        var lavalink = Client.UseLavalink();
         
         await Client.ConnectAsync(new DiscordActivity("Powered by SimpleBot", ActivityType.Watching));
+        await lavalink.ConnectAsync(lavalinkConfig);
         await Task.Delay(-1); // make the bot stay online
     }
 
@@ -80,8 +99,6 @@ public class Bot {
             Color = DiscordColor.Green,
             Timestamp = DateTime.Now
         };
-            
-        e.Channel.SendMessageAsync(e.Author.Mention, embed);
 
         return Task.CompletedTask;
     }
@@ -90,7 +107,7 @@ public class Bot {
         DiscordEmbed embed;
         
         switch (e.Interaction.Data.CustomId) {
-            case "fun":
+            case "fun": // Fun commands help menu
                 embed = new DiscordEmbedBuilder()
                     .WithTitle("Fun commands help menu")
                     .WithDescription("`/8ball [input]` - Get a random answer to your question\n" +
@@ -106,7 +123,7 @@ public class Bot {
                 e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
                     new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
-            case "moderation":
+            case "moderation": // Moderation commands help menu
                 embed = new DiscordEmbedBuilder()
                     .WithTitle("Moderation commands help menu")
                     .WithDescription("`/purge [amount]` - Deletes a specified amount of messages\n" +
@@ -123,7 +140,7 @@ public class Bot {
                     e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
                         new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;
-            case "utility":
+            case "utility": // Utility commands help menu
                 embed = new DiscordEmbedBuilder()
                     .WithTitle("Utility commands help menu")
                     .WithDescription("`/ping` - Returns a client's ping\n" +
@@ -134,10 +151,25 @@ public class Bot {
                                      "`/support` - Return the link to the bot's support server\n" +
                                      "`/uptime` - Returns the bot's uptime\n" +
                                      "`/profile` - Returns your profile\n" +
-                                     "`/userxp [user] [xpToGive]` - Gives a specified amount of xp to a specified user\n")
+                                     "`/userxp [user] [xpToGive]` - Gives a specified amount of xp to a specified user\n +" +
+                                     "`/addreward [level] [roleId]` - Set the role award for specified level")
                     .WithColor(DiscordColor.Azure)
                     .WithTimestamp(DateTime.Now);
-                
+                e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
+                    new DiscordInteractionResponseBuilder().AddEmbed(embed));
+                return Task.CompletedTask;
+            case "music": // Music commands help menu
+                embed = new DiscordEmbedBuilder()
+                    .WithTitle("Music commands help menu")
+                    .WithDescription("`/play [song]` - Plays a specified song\n" +
+                                     "`/skip` - Skips the current song\n" +
+                                     "`/stop` - Stops the current song\n" +
+                                     "`/queue` - Returns the current queue\n" +
+                                     "`/pause` - Pauses the current song\n" +
+                                     "`/resume` - Resumes the current song\n" +
+                                     "`/nowplaying` - Returns the current song")
+                    .WithColor(DiscordColor.Azure)
+                    .WithTimestamp(DateTime.Now);
                 e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, 
                     new DiscordInteractionResponseBuilder().AddEmbed(embed));
                 return Task.CompletedTask;

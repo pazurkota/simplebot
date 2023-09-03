@@ -126,6 +126,7 @@ public class UtilityCommands : ApplicationCommandModule {
         var funButton = new DiscordButtonComponent(ButtonStyle.Success, "fun", "Fun Commands");
         var moderationButton = new DiscordButtonComponent(ButtonStyle.Success, "moderation", "Moderation Commands");
         var utilityButton = new DiscordButtonComponent(ButtonStyle.Success, "utility", "Utility Commands");
+        var musicButton = new DiscordButtonComponent(ButtonStyle.Success, "music", "Music Commands");
 
         var embed = new DiscordMessageBuilder()
             .WithEmbed(new DiscordEmbedBuilder()
@@ -134,7 +135,7 @@ public class UtilityCommands : ApplicationCommandModule {
                 .WithColor(DiscordColor.Azure)
                 .WithTimestamp(DateTime.Now)
             )
-            .AddComponents(funButton, moderationButton, utilityButton);
+            .AddComponents(funButton, moderationButton, utilityButton, musicButton);
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed.Embed).AddComponents(embed.Components));
     }
