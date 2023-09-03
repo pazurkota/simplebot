@@ -1,6 +1,11 @@
 # 🤖 simplebot
 
-A Simple Discord bot to entertain your server
+***The current, stabile version of this bot is `1.x`, with is stabile, rich and fuctional. Now we are focused on developing the `v2.0`, witch means:***
+- *`v1.x` is under mainanence mode. The PR's (on `develop` branch) will be accepted if changes impacts the current functionality.*
+- *All new development will be on `v2_develop` branch.*
+- *Developers are encouraged to continue building on `v1.x` until we announce `v2.0` is stable.*
+
+**simplebot is a simple, yet powerful discord bot for your server!**
 
 ![IMG1](https://cdn.discordapp.com/attachments/973146682499956746/1119970853896069211/readme_img.png)
 ## Prerequisites
