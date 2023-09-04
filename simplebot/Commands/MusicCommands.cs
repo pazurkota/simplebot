@@ -41,8 +41,8 @@ public class MusicCommands : ApplicationCommandModule {
         }
         
         var track = query.Tracks.First();
-        
-        if (Queue.Count != 0) {
+
+        if (connection.CurrentState.CurrentTrack != null) {
             Queue.Add(track);
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Added {track.Title} to the queue!"));
             return;
@@ -56,6 +56,59 @@ public class MusicCommands : ApplicationCommandModule {
                           $"Duration: {track.Length}\n" +
                           $"Requested by: {ctx.Member.Username}\n" +
                           $"Url: [Click here!]({track.Uri})",
+            Color = DiscordColor.Purple,
+            Timestamp = DateTime.Now
+        };
+        
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+
+    [SlashCommand("skip", "Skips the current song")]
+    public async Task SkipCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+        
+        var user = ctx.Member.VoiceState;
+        var lavalinkInstance = ctx.Client.GetLavalink();
+        
+        if (user == null! || user.Channel.Type != ChannelType.Voice) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("You are not in a voice channel!"));
+            return;
+        }
+        
+        if (!lavalinkInstance.ConnectedNodes.Any()) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Lavalink is not connected!"));
+            return;
+        }
+        
+        var node = lavalinkInstance.ConnectedNodes.Values.First();
+        var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+        
+        if (connection == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Failed to connect to voice channel!"));
+            return;
+        }
+
+        if (connection.CurrentState.CurrentTrack == null) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("There is no song playing!"));
+            return;
+        }
+        
+        if (Queue.Count == 0) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("There are no songs in the queue!"));
+            return;
+        }
+        
+        var musicTrack = Queue.First();
+        Queue.Remove(musicTrack);
+        
+        await connection.PlayAsync(musicTrack);
+
+        DiscordEmbed embed = new DiscordEmbedBuilder() {
+            Title = "Song skipped, now playing:",
+            Description = $"{musicTrack.Title} by {musicTrack.Author}\n" +
+                          $"Duration: {musicTrack.Length}\n" +
+                          $"Requested by: {ctx.Member.Username}\n" +
+                          $"Url: [Click here!]({musicTrack.Uri})",
             Color = DiscordColor.Purple,
             Timestamp = DateTime.Now
         };
