@@ -6,6 +6,7 @@ using DSharpPlus;
 namespace simplebot.Commands; 
 
 public class MusicCommands : ApplicationCommandModule {
+    private static readonly List<LavalinkTrack> Queue = new();
     
     [SlashCommand("play", "Plays a specified music")]
     public async Task PlayMusicAsync(InteractionContext ctx, [Option("music", "URL of this song")] string musicUrl) {
@@ -40,6 +41,13 @@ public class MusicCommands : ApplicationCommandModule {
         }
         
         var track = query.Tracks.First();
+        
+        if (Queue.Count != 0) {
+            Queue.Add(track);
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Added {track.Title} to the queue!"));
+            return;
+        }
+        
         await connection.PlayAsync(track);
 
         var embed = new DiscordEmbedBuilder {
@@ -52,6 +60,28 @@ public class MusicCommands : ApplicationCommandModule {
             Timestamp = DateTime.Now
         };
         
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+
+    [SlashCommand("queue", "Current queue")]
+    public async Task QueueCommandAsync(InteractionContext ctx) {
+        await ctx.DeferAsync();
+        
+        if (Queue.Count == 0) {
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("There are no songs in the queue!"));
+            return;
+        }
+
+        string str = "";
+        Queue.ForEach(x => str += $"**{Queue.IndexOf(x) + 1}.** {x.Title} by {x.Author}\n");
+        
+        var embed = new DiscordEmbedBuilder {
+            Title = "Queue:",
+            Description = str,
+            Color = DiscordColor.Purple,
+            Timestamp = DateTime.Now
+        };
+
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 }
