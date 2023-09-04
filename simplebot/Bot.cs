@@ -50,13 +50,13 @@ public class Bot {
         
         // lavalink config
         var endpoint = new ConnectionEndpoint() {
-            Hostname = "lavalink.devamop.in",
+            Hostname = "lavalink.lexnet.cc",
             Port = 443,
             Secured = true,
         };
 
         var lavalinkConfig = new LavalinkConfiguration() {
-            Password = "DevamOP",
+            Password = "lexn3tl@val!nk",
             RestEndpoint = endpoint,
             SocketEndpoint = endpoint
         };
