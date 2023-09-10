@@ -34,6 +34,8 @@ public class MusicCommands : ApplicationCommandModule {
             return;
         }
         
+        connection.PlaybackFinished += ConnectionOnPlaybackFinished;
+        
         var query = await node.Rest.GetTracksAsync(musicUrl, LavalinkSearchType.SoundCloud);
         if (query.LoadResultType is LavalinkLoadResultType.NoMatches or LavalinkLoadResultType.LoadFailed) {
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Failed to find any songs!"));
@@ -61,6 +63,27 @@ public class MusicCommands : ApplicationCommandModule {
         };
         
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
+    }
+
+    private Task ConnectionOnPlaybackFinished(LavalinkGuildConnection sender, DSharpPlus.Lavalink.EventArgs.TrackFinishEventArgs args) {
+        if (Queue.Count == 0) return Task.CompletedTask;
+        
+        var track = Queue.First();
+        Queue.Remove(track);
+
+        var embed = new DiscordEmbedBuilder {
+            Title = "Now playing:",
+            Description = $"{track.Title} by {track.Author}\n" +
+                          $"Duration: {track.Length}\n" +
+                          $"Url: [Click here!]({track.Uri})",
+            Color = DiscordColor.Purple,
+            Timestamp = DateTime.Now
+        };
+
+        sender.Channel.SendMessageAsync(embed);
+        
+        sender.PlayAsync(track);
+        return Task.CompletedTask;
     }
 
     [SlashCommand("skip", "Skips the current song")]
